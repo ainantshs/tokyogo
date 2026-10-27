@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Log In | Tokyo Go!</title>
+    <meta name="description" content="Log in to Tokyo Go! and continue planning your Tokyo adventure.">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@700&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="login.css">
+
+    <!-- JavaScript -->
+    <script src="login.js" defer></script>
+</head>
+
+<body>
+    <div class="split">
+
+        <!-- Left Image Section -->
+        <aside class="side">
+            <div class="side-image">
+                <img
+                    src="https://images.unsplash.com/photo-1542051841857-5f90071e7989?auto=format&fit=crop&w=1200&q=80"
+                    alt="Tokyo city streets illuminated at night"
+                >
+            </div>
+
+            <div class="side-content">
+                <span class="eyebrow">YOUR JAPAN JOURNEY</span>
+
+                <h2>Welcome!</h2>
+
+                <p>Your Tokyo adventure is waiting for you.</p>
+
+                <div class="decorative-line"></div>
+
+                <p class="japanese-text" lang="ja">東京へようこそ</p>
+                <p class="translation">Welcome to Tokyo</p>
+            </div>
+        </aside>
+
+        <!-- Right Login Section -->
+        <main class="form-section">
+
+            <a class="logo" href="index.html" aria-label="Tokyo Go home">
+                Tokyo<span>Go!</span>
+            </a>
+
+            <div class="form-heading">
+                <span class="welcome-label">
+                    おかえりなさい · Welcome back
+                </span>
+
+                <h1>Log in to your account</h1>
+
+                <p class="subtitle">
+                    Sign in to continue planning your perfect Tokyo trip.
+                </p>
+            </div>
+
+            <!-- Login Form -->
+            <form id="login-form" novalidate>
+
+                <!-- Email Address -->
+                <div class="input-group">
+                    <label for="email">Email address</label>
+
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        autocomplete="email"
+                        placeholder="you@example.com"
+                        required
+                    >
+                </div>
+
+                <!-- Password -->
+                <div class="input-group">
+                    <label for="password">Password</label>
+
+                    <div class="password-wrapper">
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            autocomplete="current-password"
+                            placeholder="Enter your password"
+                            required
+                        >
+
+                        <button
+                            type="button"
+                            class="toggle-password"
+                            id="toggle-password"
+                            aria-label="Show password"
+                            aria-controls="password"
+                            aria-pressed="false"
+                        >
+                            Show
+                        </button>
+                    </div>
+
+                    <p class="password-hint">
+                        Minimum 6 characters
+                    </p>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="login-button">
+                    <span>Log in to Tokyo Go!</span>
+                    <span class="button-arrow" aria-hidden="true">→</span>
+                </button>
+
+                <!-- Message Area -->
+                <div
+                    class="message"
+                    id="login-message"
+                    role="status"
+                    aria-live="polite"
+                ></div>
+
+            </form>
+
+            <!-- Divider -->
+            <div class="divider">
+                <span>YOUR NEXT ADVENTURE STARTS HERE</span>
+            </div>
+
+            <!-- Sign-up Link -->
+            <p class="alt-link">
+                New to Tokyo Go?
+                <a href="signup.html" id="signup-link">Create an account</a>
+            </p>
+
+            <!-- Back to Home -->
+            <a class="back-home" href="index.html">
+                ← Back to home
+            </a>
+
+            <p class="footer-note">
+                Made with love for your next Japan adventure ♡
+            </p>
+
+        </main>
+    </div>
+</body>
+</html>

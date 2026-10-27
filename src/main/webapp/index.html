@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tokyo Go!</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@700&family=Zen+Kaku+Gothic+New:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<nav>
+  <a class="logo" href="index.html">Tokyo<span>Go!</span></a>
+  <button class="menu" aria-label="Open menu" onclick="document.getElementById('links').classList.toggle('open')">☰</button>
+  <ul id="links">
+    <li><a href="#itinerary">Itinerary</a></li>
+    <li><a href="#places">Places</a></li>
+    <li><a href="#tips">Tips</a></li>
+    <li><a href="login.html">Login</a></li>
+    <li><a class="btn" href="login.html">Start planning</a></li>
+  </ul>
+</nav>
+
+<header class="hero">
+  <div class="bg img"><img src="https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?auto=format&fit=crop&w=1800&q=70" alt="Tokyo street at night with neon signs" onerror="this.remove()"></div>
+  <div>
+    <h1>Tokyo Itenary</h1>
+    <p>Temples at sunrise, neon at midnight. A ready-made plan covering the best of the city. Log in to save it and make it yours.</p>
+    <div class="row">
+      <a class="btn" href="login.html">Log in to save this trip</a>
+      <a class="btn ghost" href="#itinerary">See the plan</a>
+    </div>
+    <form class="picker" id="picker">
+  <div class="pick-row">
+    <div class="field">
+      <label for="start">Start date</label>
+      <input type="date" id="start" required>
+    </div>
+    <div class="field">
+      <label for="end">End date</label>
+      <input type="date" id="end" required>
+    </div>
+    <button class="btn" type="submit">Show my dates</button>
+  </div>
+  <p id="range" role="status">Choose your start and end dates and we'll date each day of the plan.</p>
+</form>
+  </div>
+</header>
+
+<section id="places" class="alt">
+  <div class="wrap">
+    <div class="head"><h2>Places you shouldn't miss</h2></div>
+    <div class="places">
+      <div class="place"><div class="img"><img src="https://images.unsplash.com/photo-1542051841857-5f90071e7989?auto=format&fit=crop&w=600&q=70" alt="Shibuya Crossing" loading="lazy" onerror="this.remove()"></div><h3>Shibuya Crossing</h3><p>Thousands cross at once. Watch from above at Shibuya Sky.</p></div>
+      <div class="place"><div class="img"><img src="https://images.unsplash.com/photo-1545569341-9eb8b30979d9?auto=format&fit=crop&w=600&q=70" alt="Senso-ji" loading="lazy" onerror="this.remove()"></div><h3>Senso-ji</h3><p>Tokyo's oldest temple, best before 8 am.</p></div>
+      <div class="place"><div class="img"><img src="https://images.unsplash.com/photo-1528164344705-47542687000d?auto=format&fit=crop&w=600&q=70" alt="Meiji Shrine" loading="lazy" onerror="this.remove()"></div><h3>Meiji Shrine</h3><p>A quiet forest path in the middle of the city.</p></div>
+      <div class="place"><div class="img"><img src="https://images.unsplash.com/photo-1536098561742-ca998e48cbcc?auto=format&fit=crop&w=600&q=70" alt="Tokyo Tower" loading="lazy" onerror="this.remove()"></div><h3>Tokyo Tower</h3><p>The red-and-white icon, glowing after sunset.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="tips">
+  <div class="wrap">
+    <div class="head"><h2>Before you go</h2></div>
+    <div class="tips">
+      <div><h3>Get a transit card</h3><p>Add a Suica or Pasmo card to your phone wallet for trains and shops.</p></div>
+      <div><h3>Carry some cash</h3><p>Many small restaurants and shrines still accept cash only.</p></div>
+      <div><h3>Start early</h3><p>Popular sights are far quieter before 9 am.</p></div>
+      <div><h3>Pack light</h3><p>Stations have many stairs, and hotel rooms are compact.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="cta">
+  <div class="wrap">
+    <h2>Ready to plan your trip?</h2>
+    <p>Log in to save this itinerary, edit each day and share it with friends.</p>
+    <a class="btn" href="login.html">Log in</a>
+  </div>
+</section>
+
+<footer>© 2026 TokyoTrip. Made for travelers.</footer>
+</body>
+</html>

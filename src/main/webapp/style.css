@@ -1,0 +1,805 @@
+
+/* ========================================
+   TOKYO GO! — JAPANESE TRAVEL DESIGN
+   ======================================== */
+
+:root {
+    --ink: #202747;
+    --ink-light: #343d60;
+    --mist: #f3f1f7;
+    --paper: #fffdf9;
+    --sakura: #f2b6c6;
+    --sakura-light: #fce8ee;
+    --torii: #c8372d;
+    --torii-dark: #a72d25;
+    --line: #e8e2e8;
+    --muted: #74768b;
+    --white: #ffffff;
+    --shadow: 0 12px 35px rgba(32, 39, 71, 0.09);
+    --radius: 20px;
+}
+
+/* Reset */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 90px;
+}
+
+body {
+    font-family: "Zen Kaku Gothic New", "Hiragino Sans",
+        Arial, sans-serif;
+    color: var(--ink);
+    background: var(--paper);
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3 {
+    font-family: "Shippori Mincho", "Hiragino Mincho ProN",
+        Georgia, serif;
+    line-height: 1.2;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+}
+
+p {
+    overflow-wrap: break-word;
+}
+
+a {
+    color: inherit;
+    transition: color 0.25s ease, background 0.25s ease;
+}
+
+img {
+    display: block;
+    max-width: 100%;
+}
+
+button,
+input {
+    font: inherit;
+}
+
+button,
+a {
+    -webkit-tap-highlight-color: transparent;
+}
+
+:focus-visible {
+    outline: 3px solid var(--sakura);
+    outline-offset: 4px;
+}
+
+/* ========================================
+   NAVIGATION
+   ======================================== */
+
+nav {
+    position: fixed;
+    inset: 0 0 auto;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 15px 6vw;
+    background: rgba(32, 39, 71, 0.94);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    color: var(--white);
+    box-shadow: 0 4px 25px rgba(20, 25, 48, 0.12);
+}
+
+.logo {
+    font-family: "Shippori Mincho", Georgia, serif;
+    font-size: 1.55rem;
+    font-weight: 700;
+    text-decoration: none;
+    letter-spacing: -0.8px;
+    white-space: nowrap;
+}
+
+.logo span {
+    color: var(--sakura);
+}
+
+nav ul {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    list-style: none;
+}
+
+nav ul a {
+    text-decoration: none;
+    font-size: 0.91rem;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.88);
+}
+
+nav ul a:hover {
+    color: var(--sakura);
+}
+
+nav ul a.btn {
+    color: var(--white);
+}
+
+.menu {
+    display: none;
+    border: 0;
+    background: transparent;
+    color: var(--white);
+    font-size: 1.8rem;
+    cursor: pointer;
+    padding: 4px 8px;
+}
+
+/* ========================================
+   BUTTONS
+   ======================================== */
+
+.btn {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    padding: 13px 25px;
+    border: 1px solid transparent;
+    border-radius: 999px;
+    background: var(--torii);
+    color: var(--white) !important;
+    text-decoration: none;
+    text-align: center;
+    font-weight: 700;
+    font-size: 0.95rem;
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(200, 55, 45, 0.15);
+    transition: transform 0.25s ease,
+        background 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+.btn:hover {
+    background: var(--torii-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 22px rgba(200, 55, 45, 0.22);
+}
+
+.btn.ghost {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    color: var(--white) !important;
+    box-shadow: none;
+    backdrop-filter: blur(6px);
+}
+
+.btn.ghost:hover {
+    background: var(--white);
+    color: var(--ink) !important;
+}
+
+nav .btn {
+    padding: 9px 20px;
+    font-size: 0.88rem;
+}
+
+/* ========================================
+   HERO SECTION
+   ======================================== */
+
+.hero {
+    min-height: 100vh;
+    min-height: 100svh;
+    display: grid;
+    align-items: end;
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    padding: 155px 7vw 8vh;
+    color: var(--white);
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(22, 33, 62, 0.25) 0%,
+            rgba(22, 33, 62, 0.48) 40%,
+            rgba(22, 33, 62, 0.96) 100%
+        ),
+        var(--ink);
+}
+
+.hero .bg {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: var(--ink);
+}
+
+.hero .bg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    opacity: 0.92;
+}
+
+.hero .bg::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        90deg,
+        rgba(22, 33, 62, 0.65),
+        rgba(22, 33, 62, 0.08)
+    );
+}
+
+.hero > div:not(.bg) {
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.hero h1 {
+    max-width: 850px;
+    font-size: clamp(3rem, 7.5vw, 6.5rem);
+    line-height: 1.08;
+    letter-spacing: -2px;
+    text-shadow: 0 4px 25px rgba(0, 0, 0, 0.18);
+}
+
+.hero p {
+    max-width: 540px;
+    margin: 22px 0 30px;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1.08rem;
+    line-height: 1.9;
+}
+
+.hero .row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+}
+
+/* ========================================
+   DATE PICKER
+   ======================================== */
+
+.picker {
+    max-width: 700px;
+    margin-top: 44px;
+    padding: 25px;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: var(--radius);
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.12);
+}
+
+.picker label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: var(--white);
+}
+
+.pick-row {
+    display: flex;
+    align-items: end;
+    flex-wrap: wrap;
+    gap: 14px;
+}
+
+.field {
+    flex: 1 1 170px;
+    min-width: 0;
+}
+
+.pick-row input {
+    width: 100%;
+    min-width: 0;
+    padding: 13px 14px;
+    border: 1px solid transparent;
+    border-radius: 10px;
+    background: var(--white);
+    color: var(--ink);
+    font-size: 0.9rem;
+    transition: border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.pick-row input:focus {
+    border-color: var(--sakura);
+    box-shadow: 0 0 0 4px rgba(242, 182, 198, 0.25);
+    outline: none;
+}
+
+.pick-row .btn {
+    flex-shrink: 0;
+}
+
+.picker p {
+    margin: 14px 0 0;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.88rem;
+}
+
+/* ========================================
+   SECTION HEADINGS
+   ======================================== */
+
+section {
+    padding: 100px 6vw;
+}
+
+.wrap {
+    max-width: 1150px;
+    margin: 0 auto;
+}
+
+.head {
+    max-width: 620px;
+    margin-bottom: 52px;
+}
+
+.head h2 {
+    margin-bottom: 16px;
+    font-size: clamp(2rem, 4.2vw, 3.3rem);
+    color: var(--ink);
+}
+
+.head p {
+    color: var(--muted);
+    font-size: 1rem;
+    line-height: 1.9;
+}
+
+/* Decorative heading underline */
+.head h2::after {
+    content: "";
+    display: block;
+    width: 58px;
+    height: 4px;
+    margin-top: 18px;
+    border-radius: 99px;
+    background: var(--torii);
+}
+
+/* ========================================
+   FIVE-DAY ITINERARY
+   ======================================== */
+
+.days {
+    display: grid;
+    gap: 38px;
+}
+
+.day {
+    display: grid;
+    grid-template-columns: 1.05fr 1fr;
+    align-items: center;
+    gap: 40px;
+    padding: 22px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--white);
+    box-shadow: var(--shadow);
+    transition: transform 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+.day:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 18px 45px rgba(32, 39, 71, 0.13);
+}
+
+.day:nth-child(even) .img {
+    order: 2;
+}
+
+.img {
+    overflow: hidden;
+    background: linear-gradient(
+        135deg,
+        #e4d9eb,
+        #f2b6c6
+    );
+}
+
+.img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s ease;
+}
+
+.day:hover .img img,
+.place:hover .img img {
+    transform: scale(1.045);
+}
+
+.day .img {
+    aspect-ratio: 4 / 3;
+    min-height: 220px;
+    border-radius: 14px;
+}
+
+.day small {
+    display: inline-block;
+    margin-bottom: 12px;
+    padding: 5px 13px;
+    border-radius: 999px;
+    background: var(--sakura-light);
+    color: var(--torii);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.day h3 {
+    margin-bottom: 14px;
+    font-size: clamp(1.5rem, 2.6vw, 2.1rem);
+}
+
+.day p {
+    color: var(--muted);
+    line-height: 1.85;
+}
+
+.day ul {
+    margin: 20px 0 0;
+    padding-left: 20px;
+    color: var(--ink-light);
+}
+
+.day li {
+    margin-bottom: 9px;
+    padding-left: 3px;
+}
+
+.day li::marker {
+    color: var(--torii);
+}
+
+/* ========================================
+   PLACES SECTION
+   ======================================== */
+
+.alt {
+    background: var(--mist);
+}
+
+.places {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 24px;
+}
+
+.place {
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    background: var(--white);
+    box-shadow: 0 8px 24px rgba(32, 39, 71, 0.06);
+    transition: transform 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+.place:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow);
+}
+
+.place .img {
+    aspect-ratio: 4 / 4.5;
+    overflow: hidden;
+    margin-bottom: 0;
+    border-radius: 0;
+}
+
+.place h3 {
+    margin: 18px 18px 8px;
+    font-size: 1.25rem;
+}
+
+.place p {
+    margin: 0 18px 22px;
+    color: var(--muted);
+    font-size: 0.91rem;
+    line-height: 1.8;
+}
+
+/* ========================================
+   TRAVEL TIPS
+   ======================================== */
+
+.tips {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 22px;
+}
+
+.tips > div {
+    padding: 26px 22px;
+    border: 1px solid var(--line);
+    border-top: 4px solid var(--sakura);
+    border-radius: 12px;
+    background: var(--white);
+    transition: transform 0.25s ease,
+        border-top-color 0.25s ease;
+}
+
+.tips > div:hover {
+    transform: translateY(-4px);
+    border-top-color: var(--torii);
+}
+
+.tips h3 {
+    margin-bottom: 12px;
+    font-size: 1.2rem;
+}
+
+.tips p {
+    color: var(--muted);
+    font-size: 0.93rem;
+    line-height: 1.85;
+}
+
+/* ========================================
+   CALL TO ACTION
+   ======================================== */
+
+.cta {
+    position: relative;
+    overflow: hidden;
+    background:
+        radial-gradient(
+            circle at 10% 20%,
+            rgba(242, 182, 198, 0.12),
+            transparent 35%
+        ),
+        var(--ink);
+    color: var(--white);
+    text-align: center;
+}
+
+.cta .wrap {
+    max-width: 760px;
+}
+
+.cta h2 {
+    margin-bottom: 20px;
+    font-size: clamp(2.1rem, 5vw, 3.5rem);
+}
+
+.cta p {
+    margin-bottom: 30px;
+    color: rgba(255, 255, 255, 0.78);
+    line-height: 1.9;
+}
+
+/* ========================================
+   FOOTER
+   ======================================== */
+
+footer {
+    padding: 28px 6vw;
+    background: #171d36;
+    color: rgba(255, 255, 255, 0.7);
+    text-align: center;
+    font-size: 0.88rem;
+}
+
+/* ========================================
+   RESPONSIVE DESIGN
+   ======================================== */
+
+@media (max-width: 1000px) {
+    nav {
+        padding: 14px 4vw;
+    }
+
+    nav ul {
+        gap: 17px;
+    }
+
+    .places,
+    .tips {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .day {
+        gap: 26px;
+    }
+}
+
+@media (max-width: 800px) {
+    nav {
+        padding: 13px 5vw;
+    }
+
+    .menu {
+        display: block;
+    }
+
+    nav ul {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0;
+        padding: 12px 5vw 22px;
+        background: var(--ink);
+        box-shadow: 0 15px 22px rgba(0, 0, 0, 0.15);
+    }
+
+    nav ul.open {
+        display: flex;
+    }
+
+    nav ul li {
+        width: 100%;
+        text-align: center;
+    }
+
+    nav ul li a {
+        display: block;
+        padding: 12px;
+    }
+
+    nav ul li .btn {
+        margin-top: 8px;
+    }
+
+    .hero {
+        padding: 130px 6vw 7vh;
+    }
+
+    .hero h1 {
+        font-size: clamp(2.8rem, 10vw, 4.5rem);
+    }
+
+    .hero .bg::after {
+        background: linear-gradient(
+            180deg,
+            rgba(22, 33, 62, 0.3),
+            rgba(22, 33, 62, 0.9)
+        );
+    }
+
+    section {
+        padding: 72px 6vw;
+    }
+
+    .day {
+        grid-template-columns: 1fr;
+        gap: 22px;
+        padding: 17px;
+    }
+
+    .day:nth-child(even) .img {
+        order: 0;
+    }
+
+    .day .img {
+        min-height: 0;
+        aspect-ratio: 16 / 10;
+    }
+
+    .head {
+        margin-bottom: 35px;
+    }
+
+    .days {
+        gap: 25px;
+    }
+}
+
+@media (max-width: 520px) {
+    .logo {
+        font-size: 1.35rem;
+    }
+
+    .hero {
+        padding: 115px 5vw 45px;
+    }
+
+    .hero h1 {
+        font-size: 2.8rem;
+        letter-spacing: -1px;
+    }
+
+    .hero p {
+        margin: 16px 0 23px;
+        font-size: 0.98rem;
+    }
+
+    .hero .row {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .hero .row .btn {
+        width: 100%;
+    }
+
+    .picker {
+        margin-top: 32px;
+        padding: 18px;
+        border-radius: 15px;
+    }
+
+    .pick-row {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .field {
+        flex-basis: auto;
+        width: 100%;
+    }
+
+    .pick-row .btn {
+        width: 100%;
+    }
+
+    section {
+        padding: 58px 5vw;
+    }
+
+    .head h2 {
+        font-size: 2rem;
+    }
+
+    .places,
+    .tips {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .place .img {
+        aspect-ratio: 16 / 10;
+    }
+
+    .day h3 {
+        font-size: 1.65rem;
+    }
+
+    .day ul {
+        padding-left: 19px;
+    }
+
+    .cta h2 {
+        font-size: 2.15rem;
+    }
+}
+
+/* ========================================
+   REDUCED MOTION ACCESSIBILITY
+   ======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+    }
+}
