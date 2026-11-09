@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Explore | Tokyo Go!</title>
+<meta name="description" content="Browse places to go in Tokyo by type and area.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@700&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="explore.css">
+<script src="explore.js" defer></script>
+</head>
+<body>
+
+<header class="top">
+  <a class="logo" href="index.html" aria-label="Tokyo Go home">Tokyo<span>Go!</span></a>
+  <nav aria-label="Main">
+    <a href="index.html">home</a>
+    <a href="explore.html" aria-current="page">explore</a>
+    <a href="itinerary.html">itinerary</a>
+    <a href="login.html">log in</a>
+  </nav>
+</header>
+
+<main class="wrap">
+
+  <div class="head">
+    <h1>Places to go in Tokyo</h1>
+    <p>Filter by type or area, then add what you like to your itinerary.</p>
+  </div>
+
+  <div class="filters">
+    <div class="filter">
+      <label for="f-type">Places to go</label>
+      <select id="f-type"><option value="">all places</option></select>
+    </div>
+    <div class="filter">
+      <label for="f-area">Areas</label>
+      <select id="f-area"><option value="">all areas</option></select>
+    </div>
+  </div>
+
+  <p class="count" id="count" role="status"></p>
+
+  <ul class="cards" id="cards" aria-live="polite"></ul>
+
+</main>
+</body>
+</html>

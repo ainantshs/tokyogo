@@ -1,0 +1,81 @@
+/* TOKYO GO! — EXPLORE (same theme as login, itinerary, admin pages) */
+:root{
+  --ink:#16213e;
+  --ink-light:#343d60;
+  --mist:#eef1f7;
+  --paper:#fffdfb;
+  --sakura:#f2b6c6;
+  --sakura-light:#fce8ee;
+  --torii:#c8372d;
+  --torii-dark:#a92d25;
+  --line:#e3e5ed;
+  --muted:#737990;
+  --white:#fff;
+  --shadow:0 15px 45px rgba(22,33,62,.08);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Zen Kaku Gothic New",Arial,sans-serif;background:var(--paper);color:var(--ink);line-height:1.6;min-height:100vh}
+button,select{font:inherit;color:inherit}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%}
+:focus-visible{outline:3px solid var(--sakura);outline-offset:3px}
+
+/* Header */
+.top{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:16px 6vw;background:var(--ink);color:var(--white);box-shadow:0 4px 25px rgba(22,33,62,.12)}
+.logo{font-family:"Shippori Mincho",Georgia,serif;font-size:1.7rem;font-weight:700;letter-spacing:-1px;white-space:nowrap}
+.logo span{color:var(--sakura)}
+.top nav{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:8px 28px;font-size:.93rem;font-weight:700}
+.top nav a{color:rgba(255,255,255,.88);transition:color .2s}
+.top nav a:hover{color:var(--sakura)}
+.top nav a[aria-current]{color:var(--white);box-shadow:0 3px 0 var(--torii);padding-bottom:2px}
+
+.wrap{max-width:1150px;margin:0 auto;padding:48px 6vw 80px}
+
+/* Heading */
+.head{margin-bottom:30px}
+.head h1{font-family:"Shippori Mincho",Georgia,serif;font-size:clamp(2rem,3.6vw,2.9rem);line-height:1.25;letter-spacing:-.7px}
+.head h1::after{content:"";display:block;width:58px;height:4px;margin-top:16px;border-radius:99px;background:var(--torii)}
+.head p{margin-top:14px;color:var(--muted);max-width:520px}
+
+/* Filters */
+.filters{display:flex;flex-wrap:wrap;gap:16px}
+.filter{flex:0 1 300px;min-width:200px}
+.filter label{display:block;margin-bottom:8px;font-size:.9rem;font-weight:700}
+.filter select{display:block;width:100%;padding:15px 16px;border:1.5px solid var(--line);border-radius:11px;background:var(--white);font-size:.95rem;cursor:pointer;transition:border-color .25s,box-shadow .25s}
+.filter select:hover{border-color:#c9cddd}
+.filter select:focus{outline:none;border-color:var(--torii);box-shadow:0 0 0 4px rgba(200,55,45,.09)}
+.count{margin:22px 0 16px;color:var(--muted);font-size:.88rem}
+
+/* Cards */
+.cards{list-style:none;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}
+.card{display:grid;grid-template-columns:200px 1fr;gap:22px;padding:18px;border:1px solid var(--line);border-radius:16px;background:var(--white);box-shadow:var(--shadow);transition:transform .3s,box-shadow .3s}
+.card:hover{transform:translateY(-4px);box-shadow:0 18px 45px rgba(22,33,62,.13)}
+.photo{overflow:hidden;aspect-ratio:1/1;border-radius:12px;background:linear-gradient(135deg,#343d60,#16213e);position:relative}
+.photo img{width:100%;height:100%;object-fit:cover;transition:transform .6s}
+.card:hover .photo img{transform:scale(1.045)}
+.photo .initial{position:absolute;inset:0;display:grid;place-items:center;color:var(--sakura);font-family:"Shippori Mincho",Georgia,serif;font-size:3.2rem}
+.details{display:flex;flex-direction:column;align-items:flex-start;gap:8px;min-width:0}
+.tag{padding:3px 12px;border-radius:999px;background:var(--sakura-light);color:var(--torii);font-size:.78rem;font-weight:700}
+.details h2{font-family:"Shippori Mincho",Georgia,serif;font-size:1.4rem;line-height:1.25;letter-spacing:-.4px}
+.area{color:var(--muted);font-size:.88rem}
+.blurb{color:var(--ink-light);font-size:.92rem;line-height:1.7}
+.price{margin-top:auto;font-weight:700;font-size:.95rem}
+.plan{padding:9px 18px;border-radius:999px;background:var(--torii);color:var(--white);font-size:.85rem;font-weight:700;box-shadow:0 5px 15px rgba(200,55,45,.15);transition:background .25s}
+.plan:hover{background:var(--torii-dark)}
+.foot{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;width:100%;margin-top:auto}
+.empty{grid-column:1/-1;padding:40px 24px;border:1.5px dashed var(--line);border-radius:14px;background:var(--mist);color:var(--muted);text-align:center}
+
+/* Responsive */
+@media (max-width:900px){
+  .cards{grid-template-columns:1fr}
+}
+@media (max-width:560px){
+  .top{padding:14px 5vw}
+  .logo{font-size:1.4rem}
+  .top nav{font-size:.82rem;gap:6px 14px}
+  .wrap{padding:30px 5vw 60px}
+  .card{grid-template-columns:1fr;gap:16px}
+  .photo{aspect-ratio:16/10}
+  .filter{flex:1 1 100%}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}

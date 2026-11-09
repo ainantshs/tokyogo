@@ -13,7 +13,7 @@
   <a class="logo" href="index.html">Tokyo<span>Go!</span></a>
   <button class="menu" aria-label="Open menu" onclick="document.getElementById('links').classList.toggle('open')">☰</button>
   <ul id="links">
-    <li><a href="itinerary.html">Itinerary</a></li>
+    <li><a href="explore.html">Explore</a></li>
     <li><a href="#places">Places</a></li>
     <li><a href="#tips">Tips</a></li>
     <li><a href="login.html">Login</a></li>
@@ -80,5 +80,18 @@
 </section>
 
 <footer>© 2026 TokyoTrip. Made for travelers.</footer>
+
+<script>
+	document.getElementById("picker").addEventListener("submit", function (e) {
+	  e.preventDefault();
+	  var s = document.getElementById("start").value;
+	  var en = document.getElementById("end").value;
+	  var out = document.getElementById("range");
+	  if (!s || !en) { out.textContent = "Please choose both a start and an end date."; return; }
+	  if (en < s) { out.textContent = "The end date must be after the start date."; return; }
+	  window.location.href = "itinerary.html?start=" + s + "&end=" + en;
+	});
+</script>
+
 </body>
 </html>

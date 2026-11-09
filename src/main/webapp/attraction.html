@@ -23,46 +23,50 @@
 </header>
 
 <main class="wrap">
-  <h1 class="sr">Attractions</h1>
+  <h1 class="sr">Manage attractions</h1>
 
   <!-- Search + add -->
   <div class="toolbar">
     <div class="search">
       <label class="sr" for="search">Search attractions</label>
-      <input type="search" id="search" placeholder="search by name, type or area" autocomplete="off">
+      <input type="search" id="search" placeholder="search" autocomplete="off">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg>
     </div>
-    <button type="button" class="add-new" id="add-new">+ add</button>
+    <button type="button" class="add-new" id="add-new" aria-expanded="false" aria-controls="drop">+ add</button>
   </div>
 
-  <!-- List -->
+  <p class="notice" id="notice" role="status"></p>
+
+  <!-- List: place name with edit and delete -->
   <ul id="place-list" aria-live="polite"></ul>
 
-  <!-- Add / edit form -->
+  <!-- Add / edit form (drops down when you click + add or edit) -->
+  <div class="drop" id="drop" inert>
+  <div class="drop-inner">
   <form class="panel" id="place-form" novalidate>
-    <h2 id="form-title">add attraction</h2>
+    <h2 id="form-title">add / edit form</h2>
 
     <div class="grid">
       <div class="field">
         <label for="f-name">Name</label>
-        <input type="text" id="f-name" placeholder="e.g. Senso-ji Temple" maxlength="60" required>
+        <input type="text" id="f-name" placeholder="name" maxlength="60" required>
       </div>
 
       <div class="field">
         <label for="f-type">Type</label>
         <select id="f-type" required>
-          <option value="" disabled selected>select type</option>
+          <option value="" disabled selected>type</option>
         </select>
       </div>
 
       <div class="field">
         <label for="f-area">Area</label>
-        <input type="text" id="f-area" placeholder="e.g. Asakusa" maxlength="40" required>
+        <input type="text" id="f-area" placeholder="area" maxlength="40" required>
       </div>
 
       <div class="field">
-        <label for="f-price">Price (¥)</label>
-        <input type="number" id="f-price" placeholder="0 for free" min="0" step="100" inputmode="numeric" required>
+        <label for="f-price">Price</label>
+        <input type="number" id="f-price" placeholder="price (¥)" min="0" step="100" inputmode="numeric" required>
       </div>
     </div>
 
@@ -73,6 +77,8 @@
       <button type="button" class="cancel-btn" id="cancel" hidden>cancel</button>
     </div>
   </form>
+  </div>
+  </div>
 </main>
 </body>
 </html>
