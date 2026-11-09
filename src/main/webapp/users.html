@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Users | Tokyo Go!</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@700&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="users.css">
+<script src="users.js" defer></script>
+</head>
+<body>
+
+<header class="top">
+  <a class="logo" href="index.html" aria-label="Tokyo Go home">Tokyo<span>Go!</span></a>
+  <nav aria-label="Admin">
+    <a href="dashboard.html">dashboard</a>
+    <a href="attractions.html">attractions</a>
+    <a href="users.html" aria-current="page">users</a>
+    <a href="login.html">log out</a>
+  </nav>
+</header>
+
+<main class="wrap">
+  <h1 class="sr">Users</h1>
+
+  <div class="search">
+    <label class="sr" for="search">Search users by name or email</label>
+    <input type="search" id="search" placeholder="search by name or email" autocomplete="off">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg>
+  </div>
+
+  <p class="count" id="count" role="status"></p>
+
+  <ul id="user-list" aria-live="polite"></ul>
+</main>
+</body>
+</html>

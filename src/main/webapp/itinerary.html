@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Itinerary | Tokyo Go!</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@700&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="itinerary.css">
+<script src="itinerary.js" defer></script>
+</head>
+<body>
+
+<header class="top">
+  <a class="logo" href="index.html" aria-label="Tokyo Go home">Tokyo<span>Go!</span></a>
+  <nav aria-label="Main">
+    <a href="index.html">home</a>
+    <a href="index.html#places">explore</a>
+    <a href="itinerary.html" aria-current="page">itinerary</a>
+    <a href="login.html">log in</a>
+  </nav>
+</header>
+
+<main class="planner">
+
+  <!-- LEFT: trip + days + activities -->
+  <section class="left" aria-label="Your trip">
+    <input class="bar name" id="trip-name" type="text" value="My Tokyo trip" aria-label="Trip name" maxlength="60">
+
+    <div class="bar dates">
+      <input type="date" id="start" aria-label="Start date">
+      <span aria-hidden="true">–</span>
+      <input type="date" id="end" aria-label="End date">
+    </div>
+
+    <div class="tabs" id="tabs" role="tablist" aria-label="Days"></div>
+
+    <ul class="activities" id="activities" aria-live="polite"></ul>
+  </section>
+
+  <!-- RIGHT: price + add activity -->
+  <aside class="right" aria-label="Trip tools">
+    <div class="bar total">
+      <span>total price</span>
+      <strong id="total">¥0</strong>
+    </div>
+
+    <form class="panel" id="add-form">
+      <h2>add activity</h2>
+
+      <label class="sr" for="place">Select place</label>
+      <select id="place" required>
+        <option value="" disabled selected>select place</option>
+      </select>
+
+      <div class="times">
+        <div>
+          <label for="t-start">start time</label>
+          <input type="time" id="t-start" value="09:00" required>
+        </div>
+        <div>
+          <label for="t-end">end time</label>
+          <input type="time" id="t-end" value="11:00" required>
+        </div>
+      </div>
+
+      <p class="form-msg" id="form-msg" role="status"></p>
+
+      <button type="submit" class="add-btn">add to <span id="add-day-label">day 1</span></button>
+    </form>
+  </aside>
+
+</main>
+<script>
+	document.getElementById("picker").addEventListener("submit", function (e) {
+	  e.preventDefault();
+	  var s = document.getElementById("start").value;
+	  var en = document.getElementById("end").value;
+	  var out = document.getElementById("range");
+	  if (!s || !en) { out.textContent = "Please choose both a start and an end date."; return; }
+	  if (en < s) { out.textContent = "The end date must be after the start date."; return; }
+	  window.location.href = "itinerary.html?start=" + s + "&end=" + en;
+	});
+</script>
+</body>
+</html>

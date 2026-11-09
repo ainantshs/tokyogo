@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Attractions | Tokyo Go!</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@700&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="attraction.css">
+<script src="attraction.js" defer></script>
+</head>
+<body>
+
+<header class="top">
+  <a class="logo" href="index.html" aria-label="Tokyo Go home">Tokyo<span>Go!</span></a>
+  <nav aria-label="Admin">
+    <a href="dashboard.html">dashboard</a>
+    <a href="attraction.html" aria-current="page">attractions</a>
+    <a href="users.html">users</a>
+    <a href="login.html">log out</a>
+  </nav>
+</header>
+
+<main class="wrap">
+  <h1 class="sr">Attractions</h1>
+
+  <!-- Search + add -->
+  <div class="toolbar">
+    <div class="search">
+      <label class="sr" for="search">Search attractions</label>
+      <input type="search" id="search" placeholder="search by name, type or area" autocomplete="off">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg>
+    </div>
+    <button type="button" class="add-new" id="add-new">+ add</button>
+  </div>
+
+  <!-- List -->
+  <ul id="place-list" aria-live="polite"></ul>
+
+  <!-- Add / edit form -->
+  <form class="panel" id="place-form" novalidate>
+    <h2 id="form-title">add attraction</h2>
+
+    <div class="grid">
+      <div class="field">
+        <label for="f-name">Name</label>
+        <input type="text" id="f-name" placeholder="e.g. Senso-ji Temple" maxlength="60" required>
+      </div>
+
+      <div class="field">
+        <label for="f-type">Type</label>
+        <select id="f-type" required>
+          <option value="" disabled selected>select type</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="f-area">Area</label>
+        <input type="text" id="f-area" placeholder="e.g. Asakusa" maxlength="40" required>
+      </div>
+
+      <div class="field">
+        <label for="f-price">Price (¥)</label>
+        <input type="number" id="f-price" placeholder="0 for free" min="0" step="100" inputmode="numeric" required>
+      </div>
+    </div>
+
+    <p class="form-msg" id="form-msg" role="status"></p>
+
+    <div class="actions">
+      <button type="submit" class="save-btn">save</button>
+      <button type="button" class="cancel-btn" id="cancel" hidden>cancel</button>
+    </div>
+  </form>
+</main>
+</body>
+</html>
