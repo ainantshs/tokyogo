@@ -7,43 +7,47 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@700&family=Zen+Kaku+Gothic+New:wght@400;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@700&family=Zen+Kaku+Gothic+New:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="navbar.css">
 </head>
 <body>
 <nav>
   <a class="logo" href="index.html">Tokyo<span>Go!</span></a>
   <button class="menu" aria-label="Open menu" onclick="document.getElementById('links').classList.toggle('open')">☰</button>
   <ul id="links">
+  	<li><a href="index.html" class="active">Home</a></li>
     <li><a href="explore.html">Explore</a></li>
-    <li><a href="#places">Places</a></li>
-    <li><a href="#tips">Tips</a></li>
+    <li><a href="manage.html">Itinerary</a></li>
+    <li><a href="users.html">Profile</a></li>
     <li><a href="login.html">Login</a></li>
-    <li><a class="btn" href="itinerary.html">Start planning</a></li>
+    <!-- <li><a class="btn" href="itinerary.html">Start planning</a></li> -->
   </ul>
 </nav>
 
 <header class="hero">
   <div class="bg img"><img src="img/tokyo3.jpg" alt="Tokyo street at night with neon signs" onerror="this.remove()"></div>
   <div>
-    <h1>Tokyo Itinerary!</h1>
+    <h1>Tokyo Go!</h1>
     <p>Temples at sunrise, neon at midnight. A ready-made plan covering the best of the city. Log in to save it and make it yours.</p>
     <div class="row">
-      <a class="btn" href="login.html">Log in to save this trip</a>
-      <a class="btn ghost" href="itinerary.html">See the plan</a>
+      <a class="btn" href="login.html">Log in to plan your trip</a>
+      <a class="btn ghost" href="explore.html">See more places</a>
     </div>
-    <form class="picker" id="picker">
-  <div class="pick-row">
-    <div class="field">
-      <label for="start">Start date</label>
-      <input type="date" id="start" required>
-    </div>
-    <div class="field">
-      <label for="end">End date</label>
-      <input type="date" id="end" required>
-    </div>
-    <button class="btn" type="submit">Show my dates</button>
-  </div>
-  <p id="range" role="status">Choose your start and end dates and we'll date each day of the plan.</p>
-</form>
+   <!--  <form class="picker" id="picker">
+	  <div class="pick-row">
+	    <div class="field">
+	      <label for="start">Start date</label>
+	      <input type="date" id="start" required>
+	    </div>
+	    <div class="field">
+	      <label for="end">End date</label>
+	      <input type="date" id="end" required>
+	    </div>
+	    <button class="btn" type="submit">Show my dates</button>
+	  </div>
+	  <p id="range" role="status">Choose your start and end dates and we'll date each day of the plan.</p>
+	</form> -->
   </div>
 </header>
 

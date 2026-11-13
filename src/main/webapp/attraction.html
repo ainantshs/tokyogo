@@ -3,82 +3,347 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Attractions | Tokyo Go!</title>
+<title>Manage | Tokyo Go!</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@700&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="attraction.css">
-<script src="attraction.js" defer></script>
+<style>
+  :root {
+    --navy: #1e2150;
+    --navy-dark: #151740;
+    --red: #c8352f;
+    --red-dark: #a62a25;
+    --pink: #f4a6b8;
+    --bg: #f3f0f7;
+    --card: #ffffff;
+    --text: #1e2150;
+    --muted: #6b6b86;
+    --line: #e2dded;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: "Zen Kaku Gothic New", "Segoe UI", system-ui, Arial, sans-serif;
+    background: var(--bg); color: var(--text); min-height: 100vh;
+  }
+  h1, h2, h3, .logo { font-family: "Shippori Mincho", Georgia, "Times New Roman", serif; }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+
+  /* NAVBAR */
+  header { background: var(--navy); }
+  .nav {
+    max-width: 1200px; margin: 0 auto; padding: 0 24px; height: 80px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .logo { color: #fff; font-size: 1.9rem; font-weight: 700; text-decoration: none; }
+  .logo span { color: var(--pink); }
+  .nav ul { list-style: none; display: flex; gap: 36px; }
+  .nav a.link { color: #fff; text-decoration: none; font-weight: 700; font-size: .95rem; opacity: .9; }
+  .nav a.link:hover, .nav a.link.active { opacity: 1; color: var(--pink); }
+
+  /* PAGE */
+  .wrap { max-width: 1200px; margin: 0 auto; padding: 36px 24px 60px; }
+  .head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; gap: 12px; flex-wrap: wrap; }
+  .head h2 { font-size: 2rem; }
+  .underline { width: 60px; height: 4px; background: var(--red); border-radius: 2px; margin-bottom: 28px; }
+  .btn-add {
+    background: var(--red); color: #fff; border: none; border-radius: 999px;
+    padding: 12px 26px; font-weight: 700; font-size: .95rem; cursor: pointer; font-family: inherit;
+  }
+  .btn-add:hover { background: var(--red-dark); }
+
+  /* PLACE CARDS: edit (+) button + image */
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 24px; }
+  .place {
+    background: var(--card); border-radius: 20px; padding: 14px;
+    box-shadow: 0 4px 16px rgba(30,33,80,.08);
+  }
+  .place .row { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+  .edit-btn {
+    width: 38px; height: 38px; border-radius: 50%; border: 2px solid var(--navy);
+    background: #fff; color: var(--navy); font-size: 1.4rem; line-height: 1; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; font-family: inherit;
+  }
+  .edit-btn:hover { background: var(--navy); color: #fff; }
+  .row .edit-label { font-size: .85rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+  .row .tag {
+    margin-left: auto; background: var(--navy); color: #fff; font-size: .72rem; font-weight: 700;
+    padding: 4px 12px; border-radius: 999px;
+  }
+  .pic {
+    height: 170px; border-radius: 18px; background-size: cover; background-position: center;
+    background-color: #d9d4e6; display: flex; align-items: center; justify-content: center;
+    color: var(--muted); font-family: "Shippori Mincho", serif; font-size: 1.2rem;
+  }
+  .place h3 { margin: 14px 4px 2px; font-size: 1.2rem; }
+  .place .sub { margin: 0 4px 4px; color: var(--muted); font-size: .88rem; }
+  .empty { grid-column: 1 / -1; text-align: center; color: var(--muted); padding: 50px 0; }
+
+  /* POPUP BOX */
+  .overlay {
+    position: fixed; inset: 0; background: rgba(21,23,64,.6);
+    display: none; align-items: center; justify-content: center; padding: 20px; z-index: 10;
+    overflow-y: auto;
+  }
+  .overlay.show { display: flex; }
+  .popup {
+    background: #fff; border-radius: 20px; padding: 28px; width: 100%; max-width: 620px;
+    box-shadow: 0 20px 50px rgba(0,0,0,.3); max-height: 92vh; overflow-y: auto;
+  }
+  .popup h3 { font-size: 1.5rem; margin-bottom: 4px; }
+  .popup .underline { margin-bottom: 20px; }
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px 20px; }
+  .field { display: flex; flex-direction: column; gap: 6px; }
+  .field.full { grid-column: 1 / -1; }
+  .field label { font-size: .78rem; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); }
+  .field input, .field select, .field textarea {
+    padding: 10px 12px; border-radius: 10px; border: 1px solid var(--line);
+    background: var(--bg); color: var(--text); font-size: .95rem; font-family: inherit; width: 100%;
+  }
+  .field textarea { resize: vertical; min-height: 80px; }
+  .field input:focus, .field select:focus, .field textarea:focus { outline: 2px solid var(--pink); border-color: var(--red); }
+  .preview { margin-top: 8px; height: 110px; border-radius: 12px; background-size: cover; background-position: center; background-color: var(--bg); display: none; }
+  .preview.show { display: block; }
+  .msg { color: var(--red); font-size: .88rem; margin-top: 12px; min-height: 1.2em; }
+  .actions { display: flex; gap: 12px; margin-top: 10px; align-items: center; }
+  .btn-save {
+    background: var(--red); color: #fff; border: none; border-radius: 999px;
+    padding: 12px 28px; font-weight: 700; cursor: pointer; font-family: inherit;
+  }
+  .btn-save:hover { background: var(--red-dark); }
+  .btn-cancel {
+    background: transparent; color: var(--navy); border: 1px solid var(--navy);
+    border-radius: 999px; padding: 12px 26px; font-weight: 700; cursor: pointer; font-family: inherit;
+  }
+  .btn-cancel:hover { background: var(--navy); color: #fff; }
+  .btn-del {
+    margin-left: auto; background: transparent; color: var(--red); border: none;
+    font-weight: 700; cursor: pointer; font-family: inherit; text-decoration: underline;
+  }
+
+  @media (max-width: 600px) {
+    .nav ul { gap: 14px; }
+    .nav a.link { font-size: .8rem; }
+    .logo { font-size: 1.4rem; }
+    .form-grid { grid-template-columns: 1fr; }
+  }
+</style>
 </head>
 <body>
 
-<header class="top">
-  <a class="logo" href="index.html" aria-label="Tokyo Go home">Tokyo<span>Go!</span></a>
-  <nav aria-label="Admin">
-    <a href="dashboard.html">dashboard</a>
-    <a href="attraction.html" aria-current="page">attractions</a>
-    <a href="users.html">users</a>
-    <a href="login.html">log out</a>
+<header>
+  <nav class="nav">
+    <a class="logo" href="index.html" aria-label="Tokyo Go home">Tokyo<span>Go!</span></a>
+    <ul>
+      <li><a class="link active" href="attraction.html">Manage</a></li>
+      <li><a class="link" href="login.html">Log out</a></li>
+    </ul>
   </nav>
 </header>
 
 <main class="wrap">
-  <h1 class="sr">Manage attractions</h1>
-
-  <!-- Search + add -->
-  <div class="toolbar">
-    <div class="search">
-      <label class="sr" for="search">Search attractions</label>
-      <input type="search" id="search" placeholder="search" autocomplete="off">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg>
-    </div>
-    <button type="button" class="add-new" id="add-new" aria-expanded="false" aria-controls="drop">+ add</button>
+  <div class="head">
+    <h2>Manage places</h2>
+    <button class="btn-add" id="addBtn" type="button">+ Add place</button>
   </div>
+  <div class="underline"></div>
 
-  <p class="notice" id="notice" role="status"></p>
+  <div class="grid" id="list"></div>
+</main>
 
-  <!-- List: place name with edit and delete -->
-  <ul id="place-list" aria-live="polite"></ul>
+<!-- POPUP BOX -->
+<div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-labelledby="popupTitle">
+  <form class="popup" id="form" novalidate>
+    <h3 id="popupTitle">Add place</h3>
+    <div class="underline"></div>
 
-  <!-- Add / edit form (drops down when you click + add or edit) -->
-  <div class="drop" id="drop" inert>
-  <div class="drop-inner">
-  <form class="panel" id="place-form" novalidate>
-    <h2 id="form-title">add / edit form</h2>
-
-    <div class="grid">
+    <div class="form-grid">
       <div class="field">
         <label for="f-name">Name</label>
-        <input type="text" id="f-name" placeholder="name" maxlength="60" required>
+        <input type="text" id="f-name" maxlength="60" required>
       </div>
 
       <div class="field">
-        <label for="f-type">Type</label>
-        <select id="f-type" required>
-          <option value="" disabled selected>type</option>
+        <label for="f-open">Open time</label>
+        <input type="time" id="f-open" required>
+      </div>
+
+      <div class="field">
+        <label for="f-category">Category</label>
+        <select id="f-category" required>
+          <option value="" disabled selected>Select category</option>
+          <option value="place">Place</option>
+          <option value="food">Food</option>
         </select>
       </div>
 
       <div class="field">
-        <label for="f-area">Area</label>
-        <input type="text" id="f-area" placeholder="area" maxlength="40" required>
+        <label for="f-close">Close time</label>
+        <input type="time" id="f-close" required>
       </div>
 
       <div class="field">
-        <label for="f-price">Price</label>
-        <input type="number" id="f-price" placeholder="price (¥)" min="0" step="100" inputmode="numeric" required>
+        <label for="f-area">Area</label>
+        <input type="text" id="f-area" maxlength="40" required>
+      </div>
+
+      <div class="field">
+        <label for="f-price">Price (¥)</label>
+        <input type="number" id="f-price" min="0" step="100" inputmode="numeric" placeholder="0 = free" required>
+      </div>
+
+      <div class="field full">
+        <label for="f-desc">Description</label>
+        <textarea id="f-desc" maxlength="300" required></textarea>
+      </div>
+
+      <div class="field">
+        <label for="f-image">Image</label>
+        <input type="file" id="f-image" accept="image/*">
+        <div class="preview" id="preview"></div>
+      </div>
+
+      <div class="field">
+        <label for="f-rating">Rating (0 – 5)</label>
+        <input type="number" id="f-rating" min="0" max="5" step="0.1" inputmode="decimal" required>
       </div>
     </div>
 
-    <p class="form-msg" id="form-msg" role="status"></p>
+    <p class="msg" id="msg" role="status"></p>
 
     <div class="actions">
-      <button type="submit" class="save-btn">save</button>
-      <button type="button" class="cancel-btn" id="cancel" hidden>cancel</button>
+      <button type="submit" class="btn-save">Save</button>
+      <button type="button" class="btn-cancel" id="cancel">Cancel</button>
+      <button type="button" class="btn-del" id="del" hidden>Delete</button>
     </div>
   </form>
-  </div>
-  </div>
-</main>
+</div>
+
+<script>
+  const KEY = "tokyogo_places";
+  const seed = [
+    { id: 1, name: "Senso-ji Temple", category: "place", area: "Asakusa", price: 0, rating: 4.7,
+      open: "06:00", close: "17:00", desc: "Tokyo's oldest temple, with the famous Kaminarimon gate.", image: "" },
+    { id: 2, name: "Ichiran Ramen", category: "food", area: "Shibuya", price: 1100, rating: 4.5,
+      open: "10:00", close: "00:00", desc: "Tonkotsu ramen eaten in a private booth.", image: "" }
+  ];
+
+  let places = JSON.parse(localStorage.getItem(KEY) || "null") || seed;
+  let editingId = null;
+  let imageData = "";
+
+  const $ = id => document.getElementById(id);
+  const list = $("list"), overlay = $("overlay"), form = $("form"), msg = $("msg"), preview = $("preview");
+
+  const save = () => localStorage.setItem(KEY, JSON.stringify(places));
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
+
+  function render() {
+    if (!places.length) {
+      list.innerHTML = '<div class="empty">No places yet. Click "+ Add place".</div>';
+      return;
+    }
+    list.innerHTML = places.map(p => `
+      <article class="place">
+        <div class="row">
+          <button class="edit-btn" type="button" data-edit="${p.id}" aria-label="Edit ${esc(p.name)}">+</button>
+          <span class="edit-label">edit</span>
+          <span class="tag">${p.category === "food" ? "Food" : "Place"}</span>
+        </div>
+        <div class="pic" ${p.image ? `style="background-image:url('${p.image}')"` : ""}>${p.image ? "" : "image"}</div>
+        <h3>${esc(p.name)}</h3>
+        <p class="sub">${esc(p.area)} · ${p.price === 0 ? "Free" : "¥" + Number(p.price).toLocaleString("en-US")} · ★ ${Number(p.rating).toFixed(1)}</p>
+      </article>
+    `).join("");
+  }
+
+  function setPreview(src) {
+    imageData = src || "";
+    preview.style.backgroundImage = src ? `url('${src}')` : "";
+    preview.classList.toggle("show", !!src);
+  }
+
+  function openPopup(id) {
+    editingId = id;
+    form.reset();
+    setPreview("");
+    msg.textContent = "";
+    $("del").hidden = id === null;
+    $("popupTitle").textContent = id === null ? "Add place" : "Edit place";
+
+    if (id !== null) {
+      const p = places.find(x => x.id === id);
+      $("f-name").value = p.name;
+      $("f-category").value = p.category;
+      $("f-area").value = p.area;
+      $("f-desc").value = p.desc;
+      $("f-price").value = p.price;
+      $("f-rating").value = p.rating;
+      $("f-open").value = p.open;
+      $("f-close").value = p.close;
+      setPreview(p.image);
+    }
+    overlay.classList.add("show");
+    $("f-name").focus();
+  }
+
+  const closePopup = () => overlay.classList.remove("show");
+
+  $("addBtn").addEventListener("click", () => openPopup(null));
+  list.addEventListener("click", e => {
+    const b = e.target.closest("[data-edit]");
+    if (b) openPopup(Number(b.dataset.edit));
+  });
+  $("cancel").addEventListener("click", closePopup);
+  overlay.addEventListener("click", e => { if (e.target === overlay) closePopup(); });
+  document.addEventListener("keydown", e => { if (e.key === "Escape") closePopup(); });
+
+  $("f-image").addEventListener("change", e => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => setPreview(reader.result);
+    reader.readAsDataURL(file);
+  });
+
+  form.addEventListener("submit", e => {
+    e.preventDefault();
+    const data = {
+      name: $("f-name").value.trim(),
+      category: $("f-category").value,
+      area: $("f-area").value.trim(),
+      desc: $("f-desc").value.trim(),
+      price: parseInt($("f-price").value, 10),
+      rating: parseFloat($("f-rating").value),
+      open: $("f-open").value,
+      close: $("f-close").value,
+      image: imageData
+    };
+
+    if (!data.name || !data.category || !data.area || !data.desc || !data.open || !data.close ||
+        isNaN(data.price) || isNaN(data.rating)) {
+      msg.textContent = "Please fill in all fields.";
+      return;
+    }
+    if (data.rating < 0 || data.rating > 5) { msg.textContent = "Rating must be between 0 and 5."; return; }
+    if (data.price < 0) { msg.textContent = "Price can't be negative."; return; }
+
+    if (editingId === null) {
+      places.push({ id: Date.now(), ...data });
+    } else {
+      places = places.map(p => p.id === editingId ? { id: p.id, ...data } : p);
+    }
+    save(); render(); closePopup();
+  });
+
+  $("del").addEventListener("click", () => {
+    if (editingId === null) return;
+    if (confirm("Delete this place?")) {
+      places = places.filter(p => p.id !== editingId);
+      save(); render(); closePopup();
+    }
+  });
+
+  render();
+</script>
 </body>
 </html>

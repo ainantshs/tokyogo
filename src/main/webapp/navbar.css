@@ -1,0 +1,98 @@
+/* ===== SHARED NAVBAR (link this on every page) ===== */
+nav {
+  --nav-bg: rgba(32, 39, 71, 0.94);
+  --nav-accent: #f2b6c6;
+  --nav-active: #c8372d;
+
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 100;
+  height: 68px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 0 6vw;
+  background: var(--nav-bg);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  color: #fff;
+  box-shadow: 0 4px 25px rgba(20, 25, 48, 0.12);
+  font-family: "Zen Kaku Gothic New", "Hiragino Sans", Arial, sans-serif;
+  line-height: 1.2;
+}
+
+nav .logo {
+  font-family: "Shippori Mincho", Georgia, serif;
+  font-size: 1.55rem;
+  font-weight: 700;
+  letter-spacing: -0.8px;
+  text-decoration: none;
+  white-space: nowrap;
+  color: #fff;
+}
+nav .logo span { color: var(--nav-accent); }
+
+nav ul {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+nav ul a {
+  text-decoration: none;
+  font-size: 0.91rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.88);
+  padding: 6px 0;
+  border-bottom: 3px solid transparent;
+  transition: color .25s ease, border-color .25s ease;
+}
+nav ul a:hover { color: var(--nav-accent); }
+nav ul a.active {
+  color: #fff;
+  border-bottom-color: var(--nav-active);
+}
+
+nav .menu {
+  display: none;
+  border: 0;
+  background: transparent;
+  color: #fff;
+  font-size: 1.8rem;
+  cursor: pointer;
+  padding: 4px 8px;
+}
+
+/* Pages without a full-screen hero need space under the fixed navbar */
+body.page { padding-top: 68px; }
+
+@media (max-width: 1000px) {
+  nav { padding: 0 4vw; }
+  nav ul { gap: 17px; }
+}
+@media (max-width: 800px) {
+  nav { padding: 0 5vw; }
+  nav .menu { display: block; }
+  nav ul {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    padding: 12px 5vw 22px;
+    background: #202747;
+    box-shadow: 0 15px 22px rgba(0, 0, 0, 0.15);
+  }
+  nav ul.open { display: flex; }
+  nav ul li { width: 100%; text-align: center; }
+  nav ul li a { display: block; padding: 12px; border-bottom: 0; }
+}
+@media (max-width: 520px) {
+  nav .logo { font-size: 1.35rem; }
+}

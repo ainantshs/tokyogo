@@ -1,38 +1,529 @@
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Users | Tokyo Go!</title>
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@700&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="users.css">
-<script src="users.js" defer></script>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Profile | Tokyo Go!</title>
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@700&family=Zen+Kaku+Gothic+New:wght@400;700&display=swap" rel="stylesheet">
+
+    <!-- Shared Navbar CSS -->
+    <link rel="stylesheet" href="navbar.css">
+
+    <style>
+
+        :root {
+            --navy: #1e2150;
+            --navy-dark: #151740;
+            --red: #c8352f;
+            --red-dark: #a62a25;
+            --pink: #f4a6b8;
+            --bg: #f3f0f7;
+            --card: #ffffff;
+            --text: #1e2150;
+            --muted: #6b6b86;
+            --line: #e2dded;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: "Zen Kaku Gothic New", "Segoe UI", system-ui, Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        h1, h2, h3, .logo {
+            font-family: "Shippori Mincho", Georgia, "Times New Roman", serif;
+        }
+
+        .sr {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            overflow: hidden;
+            clip: rect(0 0 0 0);
+        }
+
+
+        /* BANNER */
+
+        .banner {
+            background: linear-gradient(135deg, var(--navy-dark), var(--navy));
+            color: #fff;
+            padding: 48px 24px 90px;
+            text-align: center;
+        }
+
+        .avatar {
+            width: 96px;
+            height: 96px;
+            border-radius: 50%;
+            margin: 0 auto 16px;
+            background: var(--red);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: "Shippori Mincho", Georgia, serif;
+            font-size: 2.6rem;
+            font-weight: 700;
+            border: 4px solid var(--pink);
+        }
+
+        .banner h1 {
+            font-size: 2.2rem;
+        }
+
+        .banner p {
+            opacity: .75;
+            margin-top: 6px;
+        }
+
+
+        /* PROFILE CARD */
+
+        .wrap {
+            max-width: 640px;
+            margin: -56px auto 60px;
+            padding: 0 20px;
+        }
+
+        .card {
+            background: var(--card);
+            border-radius: 20px;
+            padding: 32px;
+            box-shadow: 0 10px 30px rgba(30,33,80,.12);
+        }
+
+        .card h2 {
+            font-size: 1.5rem;
+            margin-bottom: 4px;
+        }
+
+        .underline {
+            width: 60px;
+            height: 4px;
+            background: var(--red);
+            border-radius: 2px;
+            margin: 10px 0 26px;
+        }
+
+        .row {
+            padding: 16px 0;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .row:last-of-type {
+            border-bottom: none;
+        }
+
+        .label {
+            font-size: .78rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .06em;
+            color: var(--muted);
+            margin-bottom: 6px;
+        }
+
+        .value {
+            font-size: 1.1rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            word-break: break-all;
+        }
+
+        .toggle {
+            background: transparent;
+            border: 1px solid var(--line);
+            color: var(--navy);
+            border-radius: 999px;
+            padding: 6px 14px;
+            font-size: .8rem;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: inherit;
+            flex-shrink: 0;
+        }
+
+        .toggle:hover {
+            background: var(--navy);
+            color: #fff;
+            border-color: var(--navy);
+        }
+
+
+        /* DANGER ZONE */
+
+        .danger {
+            margin-top: 28px;
+            padding: 20px;
+            border-radius: 14px;
+            background: #fdf1f0;
+            border: 1px solid #f3c9c6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .danger h3 {
+            font-size: 1.1rem;
+            color: var(--red-dark);
+            margin-bottom: 6px;
+        }
+
+        .danger p {
+            font-size: .9rem;
+            color: #7a4a47;
+            line-height: 1.5;
+            margin-bottom: 16px;
+        }
+
+        .btn-delete {
+            background: var(--red);
+            color: #fff;
+            border: none;
+            border-radius: 999px;
+            padding: 12px 26px;
+            font-weight: 700;
+            font-size: .95rem;
+            cursor: pointer;
+            font-family: inherit;
+            transition: background .2s, transform .1s;
+        }
+
+        .btn-delete:hover {
+            background: var(--red-dark);
+        }
+
+        .btn-delete:active {
+            transform: scale(.97);
+        }
+
+
+        /* MODAL */
+
+        .overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(21,23,64,.6);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            z-index: 10;
+        }
+
+        .overlay.show {
+            display: flex;
+        }
+
+        .modal {
+            background: #fff;
+            border-radius: 18px;
+            padding: 28px;
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .modal h3 {
+            font-size: 1.4rem;
+            margin-bottom: 10px;
+        }
+
+        .modal p {
+            color: var(--muted);
+            line-height: 1.5;
+            margin-bottom: 22px;
+        }
+
+        .modal .actions {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .btn-cancel {
+            background: transparent;
+            color: var(--navy);
+            border: 1px solid var(--navy);
+            border-radius: 999px;
+            padding: 12px 26px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        .btn-cancel:hover {
+            background: var(--navy);
+            color: #fff;
+        }
+
+
+        @media (max-width: 600px) {
+
+            .card {
+                padding: 22px;
+            }
+
+        }
+
+    </style>
+
 </head>
-<body>
 
-<header class="top">
-  <a class="logo" href="index.html" aria-label="Tokyo Go home">Tokyo<span>Go!</span></a>
-  <nav aria-label="Admin">
-    <a href="dashboard.html">dashboard</a>
-    <a href="attractions.html">attractions</a>
-    <a href="users.html" aria-current="page">users</a>
-    <a href="login.html">log out</a>
-  </nav>
-</header>
 
-<main class="wrap">
-  <h1 class="sr">Users</h1>
+<body class="page">
 
-  <div class="search">
-    <label class="sr" for="search">Search users by name or email</label>
-    <input type="search" id="search" placeholder="search by name or email" autocomplete="off">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg>
-  </div>
+    <!-- NAVBAR -->
 
-  <p class="count" id="count" role="status"></p>
+    <header>
 
-  <ul id="user-list" aria-live="polite"></ul>
-</main>
+        <nav>
+
+            <a class="logo" href="index.html">Tokyo<span>Go!</span></a>
+
+            <!-- Hamburger Menu -->
+            <button class="menu" id="menuBtn" type="button">
+                ☰
+            </button>
+
+            <ul id="navLinks">
+
+                <li><a href="index.html">Home</a></li>
+
+                <li><a href="explore.html">Explore</a></li>
+
+                <li><a href="itinerary.html">Itinerary</a></li>
+
+                <li><a href="users.html" class="active">Profile</a></li>
+
+                <li><a href="index.html">Log out</a></li>
+
+            </ul>
+
+        </nav>
+
+    </header>
+
+
+    <!-- PROFILE BANNER -->
+
+    <section class="banner">
+
+        <div class="avatar" id="avatar">A</div>
+
+        <h1 id="bannerName">Your Profile</h1>
+
+        <!-- <p>Manage your TokyoGo! account</p> -->
+
+    </section>
+
+
+    <!-- PROFILE DETAILS -->
+
+    <main class="wrap">
+
+        <div class="card">
+
+            <h2>Account details</h2>
+
+            <div class="underline"></div>
+
+
+            <div class="row">
+
+                <div class="label">Name</div>
+
+                <div class="value" id="name"></div>
+
+            </div>
+
+
+            <div class="row">
+
+                <div class="label">Email</div>
+
+                <div class="value" id="email"></div>
+
+            </div>
+
+
+            <div class="row">
+
+                <div class="label">Password</div>
+
+                <div class="value">
+
+                    <span id="password"></span>
+
+                    <button class="toggle" id="togglePw" type="button">Show</button>
+
+                </div>
+
+            </div>
+
+
+            <div class="danger">
+
+                <!-- <h3>Delete account</h3> -->
+
+                <!-- <p>This permanently removes your account and saved itineraries. This can't be undone.</p> -->
+
+                <button class="btn-delete" id="openDelete" type="button">
+                    Remove account
+                </button>
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <!-- DELETE CONFIRMATION MODAL -->
+
+    <div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+
+        <div class="modal">
+
+            <h3 id="modalTitle">Delete your account?</h3>
+
+            <p>You'll lose your profile and saved trips. This action can't be undone.</p>
+
+            <div class="actions">
+
+                <button class="btn-cancel" id="cancelDelete" type="button">
+                    Cancel
+                </button>
+
+                <button class="btn-delete" id="confirmDelete" type="button">
+                    Yes, delete
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <script>
+
+        // Sample user. Replace with data from your backend / login session.
+
+        const user = JSON.parse(localStorage.getItem("user") || "null") || {
+
+            name: "Aiman Hakim",
+
+            email: "aiman@example.com",
+
+            password: "mypassword123"
+
+        };
+
+
+        const nameEl = document.getElementById("name");
+
+        const emailEl = document.getElementById("email");
+
+        const pwEl = document.getElementById("password");
+
+        const toggleBtn = document.getElementById("togglePw");
+
+        let showPw = false;
+
+
+        nameEl.textContent = user.name;
+
+        emailEl.textContent = user.email;
+
+        document.getElementById("bannerName").textContent = user.name;
+
+        document.getElementById("avatar").textContent = user.name.charAt(0).toUpperCase();
+
+
+        function renderPw() {
+
+            pwEl.textContent = showPw ? user.password : "•".repeat(Math.max(user.password.length, 8));
+
+            toggleBtn.textContent = showPw ? "Hide" : "Show";
+
+        }
+
+
+        toggleBtn.addEventListener("click", () => {
+
+            showPw = !showPw;
+
+            renderPw();
+
+        });
+
+
+        renderPw();
+
+
+        // DELETE ACCOUNT MODAL
+
+        const overlay = document.getElementById("overlay");
+
+        document.getElementById("openDelete").addEventListener("click", () => overlay.classList.add("show"));
+
+        document.getElementById("cancelDelete").addEventListener("click", () => overlay.classList.remove("show"));
+
+        overlay.addEventListener("click", e => {
+
+            if (e.target === overlay) overlay.classList.remove("show");
+
+        });
+
+
+        document.getElementById("confirmDelete").addEventListener("click", () => {
+
+            // TODO: call your backend to delete the account here
+
+            localStorage.removeItem("user");
+
+            window.location.href = "index.html";
+
+        });
+
+
+        // HAMBURGER MENU
+
+        const menuBtn = document.getElementById("menuBtn");
+
+        const navLinks = document.getElementById("navLinks");
+
+        menuBtn.addEventListener("click", () => {
+
+            navLinks.classList.toggle("open");
+
+        });
+
+    </script>
+
 </body>
+
 </html>
