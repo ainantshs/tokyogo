@@ -20,12 +20,37 @@
     --ink: #17234a;
     --muted: #7a84a3;
     --line: #ece8e4;
+
+    /* Background photo: set this to the SAME image your login/explore pages use */
+    --hero-img: url("img/tokyo2.jpg");
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'DM Sans', system-ui, sans-serif; background: var(--bg); color: var(--ink); min-height: 100vh; }
+  body {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    color: var(--ink);
+    min-height: 100vh;
+    background:
+      linear-gradient(180deg, rgba(23,35,74,.62) 0%, rgba(23,35,74,.45) 100%),
+      var(--hero-img) center / cover no-repeat fixed,
+      var(--navy); /* fallback if the photo is missing */
+  }
   h1, h2, h3 { font-family: 'Playfair Display', Georgia, serif; font-weight: 500; }
 
   /* (navbar styles now come from navbar.css) */
+
+  /* ---------- layout ---------- */
+  .wrap {
+    max-width: 1180px; margin: 48px auto; padding: 0 24px;
+    display: grid; grid-template-columns: 1fr 400px; gap: 40px; align-items: start;
+  }
+
+  /* left column sits on a frosted white panel so text stays readable over the photo */
+  .wrap > section {
+    background: rgba(255,255,255,.94);
+    border-radius: 28px;
+    padding: 32px 34px 36px;
+    box-shadow: 0 10px 40px rgba(0,0,0,.22);
+  }
 
   /* ---------- back link ---------- */
   .back-link {
@@ -34,11 +59,6 @@
   }
   .back-link:hover { color: var(--red); }
 
-  /* ---------- layout ---------- */
-  .wrap {
-    max-width: 1180px; margin: 48px auto; padding: 0 24px;
-    display: grid; grid-template-columns: 1fr 400px; gap: 40px; align-items: start;
-  }
   h1 { font-size: clamp(2rem, 4vw, 3.1rem); padding-bottom: 14px; border-bottom: 1px dashed var(--line); margin-bottom: 22px; }
 
   /* ---------- dates ---------- */
@@ -86,12 +106,12 @@
   /* ---------- side column ---------- */
   .total {
     background: var(--navy); color: #fff; border-radius: 24px; padding: 34px 32px;
-    display: flex; justify-content: space-between; align-items: center; box-shadow: 0 10px 30px rgba(23,35,74,.25);
+    display: flex; justify-content: space-between; align-items: center; box-shadow: 0 10px 30px rgba(0,0,0,.3);
   }
   .total span { font-weight: 700; }
   .total strong { font-family: 'Playfair Display', serif; font-size: 2.2rem; font-weight: 500; color: var(--pink-accent); }
 
-  .panel { margin-top: 24px; background: #fff; border: 1px solid var(--line); border-radius: 24px; padding: 34px 32px; box-shadow: 0 10px 40px rgba(23,35,74,.07); }
+  .panel { margin-top: 24px; background: #fff; border: 1px solid var(--line); border-radius: 24px; padding: 34px 32px; box-shadow: 0 10px 40px rgba(0,0,0,.22); }
   .panel h2 { font-size: 1.9rem; margin-bottom: 22px; }
   .panel label { display: block; font-weight: 700; font-size: .85rem; margin: 16px 0 8px; }
   .panel select, .panel input[type=time] {
@@ -111,7 +131,11 @@
   .form-err { color: var(--red); font-size: .85rem; margin-top: 12px; min-height: 1.1em; }
 
   @media (max-width: 900px) { .wrap { grid-template-columns: 1fr; } }
-  @media (max-width: 520px) { .act { flex-wrap: wrap; gap: 12px; } .act .time { border: none; padding: 0; } }
+  @media (max-width: 520px) {
+    .wrap > section { padding: 24px 18px 28px; }
+    .act { flex-wrap: wrap; gap: 12px; }
+    .act .time { border: none; padding: 0; }
+  }
 </style>
 </head>
 <body class="page">
