@@ -86,6 +86,7 @@ header { background: var(--navy); }
   display: none; align-items: center; justify-content: center; padding: 20px; z-index: 10;
   overflow-y: auto;
 }
+.swal2-container { z-index: 99999; }
 .overlay.show { display: flex; }
 .popup {
   background: #fff; border-radius: 20px; padding: 28px; width: 100%; max-width: 620px;

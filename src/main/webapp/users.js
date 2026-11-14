@@ -14,7 +14,6 @@ const emailEl = document.getElementById("email");
 const pwEl = document.getElementById("password");
 
 const editName = document.getElementById("editName");
-const editEmail = document.getElementById("editEmail");
 const editPassword = document.getElementById("editPassword");
 
 const editBtn = document.getElementById("editBtn");
@@ -100,19 +99,17 @@ document.getElementById("confirmEdit").addEventListener("click", () => {
 
 function startEditProfile() {
 
-    // Put current information into input fields
+    // Put current information into input fields (email is not editable)
     editName.value = user.name;
-    editEmail.value = user.email;
     editPassword.value = user.password;
+	editPassword.type = "text";
 
-    // Hide original profile details
+    // Hide original profile details (email stays visible)
     nameEl.classList.add("hidden");
-    emailEl.classList.add("hidden");
     passwordSection.classList.add("hidden");
 
     // Show editable input fields
     editName.classList.remove("hidden");
-    editEmail.classList.remove("hidden");
     editPassword.classList.remove("hidden");
 
     // Hide Remove Account and Edit Profile buttons
@@ -128,11 +125,10 @@ function startEditProfile() {
 saveBtn.addEventListener("click", () => {
 
     const newName = editName.value.trim();
-    const newEmail = editEmail.value.trim();
     const newPassword = editPassword.value;
 
     // Check empty fields
-    if (newName === "" || newEmail === "" || newPassword === "") {
+    if (newName === "" || newPassword === "") {
         Swal.fire({
             title: "Oops!",
             text: "Please fill in all fields.",
@@ -145,23 +141,8 @@ saveBtn.addEventListener("click", () => {
         return;
     }
 
-    // Validate email
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(newEmail)) {
-        Swal.fire({
-            title: "Invalid Email!",
-            text: "Please enter a valid email address.",
-            icon: "error",
-            confirmButtonColor: "#F28C28",
-            background: "#0B1F3A",
-            color: "#FFFFFF",
-            iconColor: "#F28C28"
-        });
-        return;
-    }
-
-    // Update user information
+    // Update user information (email is unchanged)
     user.name = newName;
-    user.email = newEmail;
     user.password = newPassword;
 
     // Save information in localStorage
@@ -209,13 +190,12 @@ function exitEditMode() {
 
     // Show original profile details
     nameEl.classList.remove("hidden");
-    emailEl.classList.remove("hidden");
     passwordSection.classList.remove("hidden");
 
     // Hide editable input fields
     editName.classList.add("hidden");
-    editEmail.classList.add("hidden");
     editPassword.classList.add("hidden");
+	editPassword.type = "password";   // hide it again
 
     // Hide Save Changes and Cancel buttons
     saveActions.classList.add("hidden");

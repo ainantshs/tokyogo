@@ -1,7 +1,7 @@
 /* Manage places page */
 const KEY = "tokyogo_places";
 const seed = [
-  { id: 1, name: "Senso-ji Temple", category: "place", area: "Asakusa", price: 0, rating: 4.7,
+  { id: 1, name: "Senso-ji Temple", category: "Attraction", area: "Asakusa", price: 0, rating: 4.7,
     open: "06:00", close: "17:00", desc: "Tokyo's oldest temple, with the famous Kaminarimon gate.", image: "" },
   { id: 2, name: "Ichiran Ramen", category: "food", area: "Shibuya", price: 1100, rating: 4.5,
     open: "10:00", close: "00:00", desc: "Tonkotsu ramen eaten in a private booth.", image: "" }
@@ -19,7 +19,7 @@ const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">
 
 function render() {
   if (!places.length) {
-    list.innerHTML = '<div class="empty">No places yet. Click "+ Add place".</div>';
+    list.innerHTML = '<div class="empty">No places yet. Click "+ Add attraction".</div>';
     return;
   }
   list.innerHTML = places.map(p => `
@@ -27,7 +27,7 @@ function render() {
       <div class="row">
         <button class="edit-btn" type="button" data-edit="${p.id}" aria-label="Edit ${esc(p.name)}">+</button>
         <span class="edit-label">edit</span>
-        <span class="tag">${p.category === "food" ? "Food" : "Place"}</span>
+        <span class="tag">${p.category === "food" ? "Food" : "Attraction"}</span>
       </div>
       <div class="pic" ${p.image ? `style="background-image:url('${p.image}')"` : ""}>${p.image ? "" : "image"}</div>
       <h3>${esc(p.name)}</h3>
@@ -48,7 +48,7 @@ function openPopup(id) {
   setPreview("");
   msg.textContent = "";
   $("del").hidden = id === null;
-  $("popupTitle").textContent = id === null ? "Add place" : "Edit place";
+  $("popupTitle").textContent = id === null ? "Add attraction" : "Edit attraction";
 
   if (id !== null) {
     const p = places.find(x => x.id === id);
@@ -117,10 +117,36 @@ form.addEventListener("submit", e => {
 
 $("del").addEventListener("click", () => {
   if (editingId === null) return;
-  if (confirm("Delete this place?")) {
-    places = places.filter(p => p.id !== editingId);
-    save(); render(); closePopup();
-  }
+
+  Swal.fire({
+    title: "Delete this attraction?",
+    text: "This action can't be undone.",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonText: "Yes, delete",
+    cancelButtonText: "Cancel",
+    confirmButtonColor: "#F28C28",
+    cancelButtonColor: "#3A4A6B",
+    background: "#0B1F3A",
+    color: "#FFFFFF",
+    iconColor: "#F28C28"
+  }).then(result => {
+    if (result.isConfirmed) {
+      places = places.filter(p => p.id !== editingId);
+      save(); render(); closePopup();
+
+      Swal.fire({
+        title: "Deleted!",
+        text: "The attraction has been removed.",
+        icon: "success",
+        confirmButtonText: "OK",
+        confirmButtonColor: "#F28C28",
+        background: "#0B1F3A",
+        color: "#FFFFFF",
+        iconColor: "#F28C28"
+      });
+    }
+  });
 });
 
 render();
