@@ -1,251 +1,148 @@
-document.addEventListener("DOMContentLoaded", function () {
-  var STORE_KEY = "tokyoGoTrip";
-  var MAX_DAYS = 14;
+/* Itinerary page */
+/* Prices are rough estimates in yen (0 = free). */
+const PLACES = [
+  { id: 'meiji',   cat: 'place', name: 'Meiji Shrine',          area: 'Shrine in Harajuku',        price: 0 },
+  { id: 'sensoji', cat: 'place', name: 'Senso-ji Temple',       area: 'Temple in Asakusa',         price: 0 },
+  { id: 'takeshita', cat: 'place', name: 'Takeshita Street',    area: 'Shopping street, Harajuku', price: 0 },
+  { id: 'akiba',   cat: 'place', name: 'Akihabara',             area: 'Electric Town',             price: 0 },
+  { id: 'gyoen',   cat: 'place', name: 'Shinjuku Gyoen',        area: 'Garden in Shinjuku',        price: 500 },
+  { id: 'ueno',    cat: 'place', name: 'Ueno Zoo',              area: 'Zoo in Ueno Park',          price: 600 },
+  { id: 'tower',   cat: 'place', name: 'Tokyo Tower',           area: 'Main deck, Minato',         price: 1200 },
+  { id: 'skytree', cat: 'place', name: 'Tokyo Skytree',         area: 'Observation deck, Sumida',  price: 2100 },
+  { id: 'sky',     cat: 'place', name: 'Shibuya Sky',           area: 'Rooftop, Shibuya',          price: 2200 },
+  { id: 'teamlab', cat: 'place', name: 'teamLab Planets',       area: 'Digital art, Toyosu',       price: 3800 },
+  { id: 'ichiran', cat: 'food',  name: 'Ichiran Ramen',         area: 'Ramen in Shibuya',          price: 1300 },
+  { id: 'tsukiji', cat: 'food',  name: 'Tsukiji Outer Market',  area: 'Street food in Chuo',       price: 2000 },
+  { id: 'sushi',   cat: 'food',  name: 'Conveyor Belt Sushi',   area: 'Sushi in Shinjuku',         price: 2500 },
+  { id: 'tonkatsu',cat: 'food',  name: 'Tonkatsu Lunch',        area: 'Set meal in Ginza',         price: 1800 },
+  { id: 'izakaya', cat: 'food',  name: 'Izakaya Dinner',        area: 'Yakitori in Yurakucho',     price: 4000 },
+];
+const byId = Object.fromEntries(PLACES.map(p => [p.id, p]));
 
-  var DEFAULT_PLACES = [
-    { id: "shibuya",  name: "Shibuya Crossing",   type: "Landmark",      area: "Shibuya",   price: 2200 },
-    { id: "sensoji",  name: "Senso-ji Temple",    type: "Temple",        area: "Asakusa",   price: 0 },
-    { id: "meiji",    name: "Meiji Shrine",       type: "Shrine",        area: "Harajuku",  price: 0 },
-    { id: "tower",    name: "Tokyo Tower",        type: "Landmark",      area: "Minato",    price: 1500 },
-    { id: "teamlab",  name: "teamLab Planets",    type: "Entertainment", area: "Toyosu",    price: 3800 },
-    { id: "tsukiji",  name: "Tsukiji Outer Market", type: "Food",        area: "Tsukiji",   price: 2000 },
-    { id: "akiba",    name: "Akihabara",          type: "Shopping",      area: "Akihabara", price: 1000 },
-    { id: "ueno",     name: "Ueno Park & Museums", type: "Park",         area: "Ueno",      price: 1000 }
-  ];
+const yen = n => n === 0 ? 'Free' : '¥' + n.toLocaleString();
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const $ = id => document.getElementById(id);
+const trash = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14M10 11v5M14 11v5"/></svg>';
 
-  // Places are managed on attractions.html and shared through localStorage
-  var PLACES = (function () {
-    var list = DEFAULT_PLACES;
-    try {
-      var saved = JSON.parse(localStorage.getItem("tokyoGoPlaces"));
-      if (Array.isArray(saved)) list = saved;
-    } catch (e) {}
-    return list.map(function (p) {
-      return { id: p.id, name: p.name, note: p.type + " in " + p.area, price: p.price };
-    });
-  })();
+/* ---------- load the trip chosen on the manage page ---------- */
+const TRIPS_KEY = 'tokyogo_trips';
+let trips = [];
+try { trips = JSON.parse(localStorage.getItem(TRIPS_KEY)) || []; } catch (e) {}
+if (!trips.length) trips = [{ id: 't1', name: 'Tokyo', start: '2026-05-13', end: '2026-05-15' }];
 
-  var nameInput = document.getElementById("trip-name");
-  var startInput = document.getElementById("start");
-  var endInput = document.getElementById("end");
-  var tabsEl = document.getElementById("tabs");
-  var listEl = document.getElementById("activities");
-  var totalEl = document.getElementById("total");
-  var form = document.getElementById("add-form");
-  var placeSel = document.getElementById("place");
-  var tStart = document.getElementById("t-start");
-  var tEnd = document.getElementById("t-end");
-  var msg = document.getElementById("form-msg");
-  var addDayLabel = document.getElementById("add-day-label");
+const tripId = new URLSearchParams(location.search).get('trip');
+const trip = trips.find(t => t.id === tripId) || trips[0];
 
-  var state = load();
-  var params = new URLSearchParams(window.location.search);
+const ACT_KEY = 'tokyogo_activities_' + trip.id;
+let acts = [];
+try { acts = JSON.parse(localStorage.getItem(ACT_KEY)) || []; } catch (e) {}
+if (!acts.length && trip.id === 't1' && !localStorage.getItem(ACT_KEY)) {
+  acts = [{ id: 'a1', day: 0, place: 'meiji', start: '09:00', end: '11:00' }];
+}
 
-  // Dates passed from the home page win over saved dates
-  if (params.get("start")) state.start = params.get("start");
-  if (params.get("end")) state.end = params.get("end");
+let currentDay = 0;
+let category = 'place';
 
-  function load() {
-    try {
-      var saved = JSON.parse(localStorage.getItem(STORE_KEY));
-      if (saved && saved.days) return saved;
-    } catch (e) {}
-    return { name: "My Tokyo trip", start: "", end: "", days: [[], [], []], active: 0 };
+const saveTrips = () => { try { localStorage.setItem(TRIPS_KEY, JSON.stringify(trips)); } catch (e) {} };
+const saveActs  = () => { try { localStorage.setItem(ACT_KEY, JSON.stringify(acts)); } catch (e) {} };
+
+/* ---------- dates & days ---------- */
+const MAX_DAYS = 14;
+const parse = d => new Date(d + 'T00:00:00');
+const dayCount = () => Math.min(MAX_DAYS, Math.max(1, Math.round((parse(trip.end) - parse(trip.start)) / 864e5) + 1));
+const dayDate = i => { const d = parse(trip.start); d.setDate(d.getDate() + i); return d; };
+
+function renderDays() {
+  const n = dayCount();
+  if (currentDay >= n) currentDay = 0;
+  $('days').innerHTML = '';
+  for (let i = 0; i < n; i++) {
+    const b = document.createElement('button');
+    b.className = 'day' + (i === currentDay ? ' active' : '');
+    b.innerHTML = `day ${i + 1}<small>${dayDate(i).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}</small>`;
+    b.onclick = () => { currentDay = i; render(); };
+    $('days').appendChild(b);
   }
+  $('addBtn').textContent = `add to day ${currentDay + 1}`;
+}
 
-  function save() {
-    try { localStorage.setItem(STORE_KEY, JSON.stringify(state)); } catch (e) {}
+/* ---------- activities ---------- */
+const t12 = t => { const [h, m] = t.split(':').map(Number); return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`; };
+
+function renderActs() {
+  const n = dayCount();
+  const todays = acts.filter(a => a.day === currentDay).sort((a, b) => a.start.localeCompare(b.start));
+  const list = $('activities');
+  list.innerHTML = '';
+
+  const dayTotal = todays.reduce((s, a) => s + (byId[a.place]?.price || 0), 0);
+  $('dayHead').innerHTML = `<strong>${dayDate(currentDay).toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long' })}</strong><span>Day total: ${dayTotal ? '¥' + dayTotal.toLocaleString() : 'Free'}</span>`;
+
+  if (!todays.length) {
+    list.innerHTML = '<div class="empty">Nothing planned for this day yet. Add an activity on the right.</div>';
   }
-
-  function parseDate(str) {
-    if (!str) return null;
-    var p = str.split("-");
-    return new Date(+p[0], +p[1] - 1, +p[2]);
-  }
-
-  function dayCount() {
-    var s = parseDate(state.start), e = parseDate(state.end);
-    if (!s || !e || e < s) return Math.max(state.days.length, 1);
-    return Math.min(Math.round((e - s) / 86400000) + 1, MAX_DAYS);
-  }
-
-  // Keep the days array the same length as the date range
-  function syncDays() {
-    var n = dayCount();
-    while (state.days.length < n) state.days.push([]);
-    if (state.days.length > n) state.days.length = n;
-    if (state.active >= n) state.active = n - 1;
-    if (state.active < 0) state.active = 0;
-  }
-
-  function dayDate(i) {
-    var s = parseDate(state.start);
-    if (!s) return "";
-    s.setDate(s.getDate() + i);
-    return s.toLocaleDateString("en-GB", { day: "numeric", month: "short" });
-  }
-
-  function yen(n) { return "¥" + n.toLocaleString("en-US"); }
-
-  function toMinutes(t) { var p = t.split(":"); return +p[0] * 60 + +p[1]; }
-
-  function renderTabs() {
-    tabsEl.innerHTML = "";
-    state.days.forEach(function (_, i) {
-      var b = document.createElement("button");
-      b.type = "button";
-      b.className = "tab";
-      b.setAttribute("role", "tab");
-      b.setAttribute("aria-selected", String(i === state.active));
-      var label = document.createElement("span");
-      label.textContent = "day " + (i + 1);
-      b.appendChild(label);
-      var d = dayDate(i);
-      if (d) {
-        var small = document.createElement("small");
-        small.textContent = d;
-        b.appendChild(small);
-      }
-      b.addEventListener("click", function () {
-        state.active = i;
-        save();
-        render();
-      });
-      tabsEl.appendChild(b);
-    });
-    addDayLabel.textContent = "day " + (state.active + 1);
-  }
-
-  var TRASH = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13M10 11v6M14 11v6"/></svg>';
-
-  function renderList() {
-    listEl.innerHTML = "";
-    var items = state.days[state.active];
-
-    if (!items.length) {
-      var li = document.createElement("li");
-      li.className = "empty";
-      li.textContent = "Nothing planned for day " + (state.active + 1) + " yet. Pick a place on the right to add it.";
-      listEl.appendChild(li);
-      return;
-    }
-
-    items.forEach(function (a, idx) {
-      var li = document.createElement("li");
-      li.className = "activity";
-
-      var time = document.createElement("div");
-      time.className = "time";
-      time.textContent = a.start + " – " + a.end;
-
-      var sep = document.createElement("div");
-      sep.className = "sep";
-      sep.setAttribute("aria-hidden", "true");
-
-      var info = document.createElement("div");
-      var h = document.createElement("h3");
-      h.textContent = a.name;
-      var p = document.createElement("p");
-      p.textContent = a.note;
-      info.appendChild(h);
-      info.appendChild(p);
-
-      var price = document.createElement("div");
-      price.className = "price";
-      price.textContent = a.price ? yen(a.price) : "Free";
-
-      var del = document.createElement("button");
-      del.type = "button";
-      del.className = "trash";
-      del.setAttribute("aria-label", "Remove " + a.name);
-      del.innerHTML = TRASH;
-      del.addEventListener("click", function () {
-        items.splice(idx, 1);
-        save();
-        render();
-      });
-
-      li.appendChild(time);
-      li.appendChild(sep);
-      li.appendChild(info);
-      li.appendChild(price);
-      li.appendChild(del);
-      listEl.appendChild(li);
-    });
-  }
-
-  function renderTotal() {
-    var sum = 0;
-    state.days.forEach(function (d) { d.forEach(function (a) { sum += a.price; }); });
-    totalEl.textContent = yen(sum);
-  }
-
-  function render() {
-    renderTabs();
-    renderList();
-    renderTotal();
-  }
-
-  function showMsg(text, ok) {
-    msg.textContent = text;
-    msg.className = "form-msg" + (ok ? " ok" : "");
-  }
-
-  // Fill the place dropdown
-  PLACES.forEach(function (p) {
-    var o = document.createElement("option");
-    o.value = p.id;
-    o.textContent = p.name + (p.price ? " (" + yen(p.price) + ")" : " (free)");
-    placeSel.appendChild(o);
+  todays.forEach(a => {
+    const p = byId[a.place]; if (!p) return;
+    const el = document.createElement('div');
+    el.className = 'act';
+    el.innerHTML = `
+      <div class="time">${t12(a.start)} – ${t12(a.end)}</div>
+      <div class="info"><h3>${esc(p.name)}</h3><p>${esc(p.area)}</p></div>
+      <span class="price">${yen(p.price)}</span>
+      <button class="icon-btn" title="Remove" aria-label="Remove ${esc(p.name)}">${trash}</button>`;
+    el.querySelector('button').onclick = () => { acts = acts.filter(x => x.id !== a.id); saveActs(); render(); };
+    list.appendChild(el);
   });
 
-  // Trip name
-  nameInput.value = state.name || "My Tokyo trip";
-  nameInput.addEventListener("input", function () {
-    state.name = nameInput.value;
-    save();
-  });
+  const total = acts.filter(a => a.day < n).reduce((s, a) => s + (byId[a.place]?.price || 0), 0);
+  $('total').textContent = '¥' + total.toLocaleString();
+}
 
-  // Dates
-  startInput.value = state.start || "";
-  endInput.value = state.end || "";
-
-  function onDatesChange() {
-    state.start = startInput.value;
-    state.end = endInput.value;
-    if (state.start && state.end && state.end < state.start) {
-      endInput.value = state.end = state.start;
-    }
-    syncDays();
-    save();
-    render();
-  }
-  startInput.addEventListener("change", onDatesChange);
-  endInput.addEventListener("change", onDatesChange);
-
-  // Add activity
-  form.addEventListener("submit", function (e) {
-    e.preventDefault();
-    var place = PLACES.filter(function (p) { return p.id === placeSel.value; })[0];
-
-    if (!place) { showMsg("Choose a place first.", false); placeSel.focus(); return; }
-    if (toMinutes(tEnd.value) <= toMinutes(tStart.value)) {
-      showMsg("End time must be after the start time.", false);
-      tEnd.focus();
-      return;
-    }
-
-    var items = state.days[state.active];
-    items.push({ name: place.name, note: place.note, price: place.price, start: tStart.value, end: tEnd.value });
-    items.sort(function (a, b) { return toMinutes(a.start) - toMinutes(b.start); });
-
-    save();
-    render();
-    showMsg(place.name + " added to day " + (state.active + 1) + ".", true);
-    placeSel.selectedIndex = 0;
-  });
-
-  syncDays();
-  save();
-  render();
+/* ---------- add-activity panel ---------- */
+function fillPlaces() {
+  $('placeSelect').innerHTML = PLACES.filter(p => p.cat === category)
+    .map(p => `<option value="${p.id}">${esc(p.name)} (${yen(p.price)})</option>`).join('');
+}
+document.querySelectorAll('#seg button').forEach(b => b.onclick = () => {
+  category = b.dataset.cat;
+  document.querySelectorAll('#seg button').forEach(x => x.classList.toggle('on', x === b));
+  fillPlaces();
 });
+
+$('addBtn').onclick = () => {
+  const place = $('placeSelect').value, start = $('startTime').value, end = $('endTime').value;
+  const err = $('formErr');
+  if (!place || !start || !end) { err.textContent = 'Pick a place and both times.'; return; }
+  if (end <= start) { err.textContent = 'End time must be after the start time.'; return; }
+  const clash = acts.find(a => a.day === currentDay && start < a.end && end > a.start);
+  if (clash) { err.textContent = `That overlaps with ${byId[clash.place].name} (${clash.start}–${clash.end}).`; return; }
+  err.textContent = '';
+  acts.push({ id: 'a' + Date.now(), day: currentDay, place, start, end });
+  saveActs(); render();
+};
+
+/* ---------- date inputs ---------- */
+function setDates() {
+  const s = $('startDate').value, e = $('endDate').value, hint = $('dateHint');
+  if (!s || !e) return;
+  if (e < s) { hint.textContent = 'End date must be on or after the start date.'; hint.className = 'hint err'; return; }
+  const span = Math.round((parse(e) - parse(s)) / 864e5) + 1;
+  hint.className = 'hint';
+  hint.textContent = span > MAX_DAYS ? `Showing the first ${MAX_DAYS} days of ${span}.` : `${span} day${span > 1 ? 's' : ''} planned.`;
+  trip.start = s; trip.end = e;
+  const i = trips.findIndex(t => t.id === trip.id); if (i >= 0) trips[i] = trip;
+  saveTrips(); render();
+}
+$('startDate').onchange = setDates;
+$('endDate').onchange = setDates;
+
+function render() { renderDays(); renderActs(); }
+
+/* ---------- init ---------- */
+$('title').textContent = `My ${trip.name} trip`;
+document.title = `${trip.name} | Tokyo Go!`;
+$('startDate').value = trip.start;
+$('endDate').value = trip.end;
+fillPlaces();
+render();
+setDates();

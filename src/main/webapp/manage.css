@@ -1,0 +1,145 @@
+/* My trips page */
+:root {
+  --navy: #17234a;
+  --navy-soft: #24335f;
+  --red: #c8352e;
+  --red-dark: #a82a24;
+  --pink: #f7d4dc;
+  --pink-soft: #fdecef;
+  --bg: #fefdfb;
+  --ink: #17234a;
+  --muted: #7a84a3;
+  --line: #ece8e4;
+
+  /* Background photo: set this to the SAME image your login/explore pages use */
+  --hero-img: url("img/tokyo3.jpg");
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'DM Sans', system-ui, sans-serif;
+  color: var(--ink);
+  min-height: 100vh;
+  background:
+    linear-gradient(180deg, rgba(23,35,74,.62) 0%, rgba(23,35,74,.45) 100%),
+    var(--hero-img) center / cover no-repeat fixed,
+    var(--navy); /* fallback if the photo is missing */
+}
+h1, h2, h3 { font-family: 'Playfair Display', Georgia, serif; font-weight: 500; }
+
+/* (navbar styles now come from navbar.css) */
+
+/* ---------- layout ---------- */
+.wrap {
+  max-width: 1180px;
+  margin: 48px auto;
+  padding: 0 24px;
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 36px;
+  align-items: start;
+}
+
+/* ---------- sidebar ---------- */
+aside {
+  background: #fff;
+  border-radius: 24px;
+  padding: 28px 22px;
+  box-shadow: 0 10px 40px rgba(0,0,0,.22);
+  border: 1px solid var(--line);
+}
+aside h2 { font-size: 1.5rem; margin-bottom: 18px; }
+#tripList { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.trip-item {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 16px;
+  border-radius: 16px;
+  border: 1px solid var(--line);
+  background: #fff;
+  cursor: pointer;
+  transition: all .2s;
+  font-weight: 500;
+}
+.trip-item:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(23,35,74,.08); }
+.trip-item.active {
+  border-color: transparent;
+  border-left: 5px solid #f4a9b8;
+  background: var(--pink-soft);
+}
+.trip-item .name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.icon-btn {
+  background: none; border: none; cursor: pointer; color: var(--muted);
+  padding: 6px; border-radius: 8px; display: grid; place-items: center;
+  transition: all .2s;
+}
+.icon-btn:hover { color: var(--red); background: #fff; }
+.empty { color: var(--muted); font-size: .9rem; padding: 6px 2px; }
+
+/* ---------- main ---------- */
+main { min-height: 420px; }
+.create-btn {
+  background: var(--red);
+  color: #fff;
+  border: none;
+  padding: 16px 34px;
+  border-radius: 999px;
+  font: 700 1.05rem 'DM Sans', sans-serif;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(200,53,46,.4);
+  transition: all .2s;
+}
+.create-btn:hover { background: var(--red-dark); transform: translateY(-2px); }
+
+.card {
+  margin-top: 34px;
+  background: #fff;
+  border-radius: 24px;
+  border: 1px solid var(--line);
+  border-left: 6px solid #f4a9b8;
+  padding: 30px 34px;
+  max-width: 560px;
+  box-shadow: 0 10px 40px rgba(0,0,0,.22);
+}
+.card h3 { font-size: 1.9rem; margin-bottom: 18px; }
+.row { display: flex; gap: 12px; padding: 10px 0; border-top: 1px dashed var(--line); }
+.row .label { width: 110px; color: var(--muted); font-size: .9rem; }
+.row .value { font-weight: 500; }
+.card .actions { margin-top: 22px; display: flex; gap: 12px; }
+.btn-open {
+  background: var(--navy); color: #fff; text-decoration: none;
+  padding: 12px 26px; border-radius: 999px; font-weight: 700; font-size: .95rem;
+  transition: background .2s;
+}
+.btn-open:hover { background: var(--navy-soft); }
+.placeholder {
+  margin-top: 34px; padding: 40px; border: 2px dashed var(--pink);
+  background: rgba(255,255,255,.92);
+  border-radius: 24px; color: var(--muted); max-width: 560px; text-align: center;
+}
+
+/* ---------- modal (z-index above the fixed navbar) ---------- */
+.overlay {
+  position: fixed; inset: 0; background: rgba(23,35,74,.45);
+  display: none; place-items: center; z-index: 200; backdrop-filter: blur(3px);
+}
+.overlay.show { display: grid; }
+.modal {
+  background: #fff; width: min(440px, 92vw); border-radius: 24px; padding: 34px;
+  box-shadow: 0 24px 60px rgba(0,0,0,.25);
+}
+.modal h2 { font-size: 1.7rem; margin-bottom: 20px; }
+.modal label { display: block; font-weight: 700; font-size: .85rem; margin: 14px 0 6px; }
+.modal input {
+  width: 100%; padding: 13px 14px; border-radius: 14px; border: 1px solid var(--line);
+  font: inherit; color: var(--ink); background: #fff;
+}
+.modal input:focus { outline: 2px solid var(--pink); border-color: var(--red); }
+.modal .btns { display: flex; gap: 10px; margin-top: 26px; }
+.modal .btns button { flex: 1; padding: 14px; border-radius: 999px; font: 700 .95rem 'DM Sans'; cursor: pointer; border: none; }
+.btn-save { background: var(--red); color: #fff; }
+.btn-save:hover { background: var(--red-dark); }
+.btn-cancel { background: var(--pink-soft); color: var(--ink); }
+.error { color: var(--red); font-size: .85rem; margin-top: 10px; min-height: 1em; }
+
+@media (max-width: 800px) {
+  .wrap { grid-template-columns: 1fr; }
+}
