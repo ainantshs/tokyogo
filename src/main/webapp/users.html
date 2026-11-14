@@ -212,12 +212,88 @@
         }
 
         .btn-delete:hover {
-            background: var(--red-dark);
-        }
-
-        .btn-delete:active {
-            transform: scale(.97);
-        }
+	            background: var(--red-dark);
+	        }
+	
+	        .btn-delete:active {
+	            transform: scale(.97);
+	        }
+	        
+	    /* EDIT PROFILE */
+		
+		.btn-edit {
+		    background: var(--navy);
+		    color: white;
+		    border: none;
+		    border-radius: 999px;
+		    padding: 10px 24px;
+		    font-weight: 700;
+		    font-size: .9rem;
+		    cursor: pointer;
+		    font-family: inherit;
+		}
+		
+		.btn-edit:hover {
+		    background: var(--navy-dark);
+		}
+		
+		.edit-input {
+		    width: 100%;
+		    padding: 12px 14px;
+		    border: 1px solid var(--line);
+		    border-radius: 10px;
+		    font-family: inherit;
+		    font-size: 1rem;
+		    color: var(--navy);
+		    outline: none;
+		}
+		
+		.edit-input:focus {
+		    border-color: var(--navy);
+		}
+		
+		.edit-actions {
+		    display: flex;
+		    gap: 10px;
+		    margin-top: 25px;
+		    justify-content: flex-end;
+		}
+		
+		.profile-actions {
+		    display: flex;
+		    justify-content: center;
+		    align-items: center;
+		    gap: 12px;
+		    margin-top: 28px;
+		}
+		
+		.btn-save {
+		    background: var(--red);
+		    color: white;
+		    border: none;
+		    border-radius: 999px;
+		    padding: 11px 22px;
+		    font-weight: 700;
+		    cursor: pointer;
+		}
+		
+		.btn-save:hover {
+		    background: var(--red-dark);
+		}
+		
+		.btn-cancel-edit {
+		    background: white;
+		    color: var(--navy);
+		    border: 1px solid var(--line);
+		    border-radius: 999px;
+		    padding: 11px 22px;
+		    font-weight: 700;
+		    cursor: pointer;
+		}
+		
+		.hidden {
+		    display: none;
+		}
 
 
         /* MODAL */
@@ -236,6 +312,17 @@
         .overlay.show {
             display: flex;
         }
+        
+        .navy-popup {
+		    border: 2px solid #F28C28;
+		    border-radius: 20px;
+		}
+		
+		.orange-button {
+		    color: #0B1F3A !important;
+		    font-weight: bold !important;
+		    border-radius: 8px !important;
+		}
 
         .modal {
             background: #fff;
@@ -273,6 +360,17 @@
             cursor: pointer;
             font-family: inherit;
         }
+        
+        .navy-popup {
+		    border: 2px solid #F28C28;
+		    border-radius: 20px;
+		}
+		
+		.orange-button {
+		    color: #0B1F3A !important;
+		    font-weight: bold !important;
+		    border-radius: 8px !important;
+		}
 
         .btn-cancel:hover {
             background: var(--navy);
@@ -287,6 +385,8 @@
             }
 
         }
+        
+        
 
     </style>
 
@@ -330,75 +430,110 @@
     <!-- PROFILE BANNER -->
 
     <section class="banner">
-
-        <div class="avatar" id="avatar">A</div>
-
         <h1 id="bannerName">Your Profile</h1>
-
         <!-- <p>Manage your TokyoGo! account</p> -->
-
     </section>
 
 
     <!-- PROFILE DETAILS -->
 
     <main class="wrap">
-
-        <div class="card">
-
-            <h2>Account details</h2>
-
-            <div class="underline"></div>
-
-
-            <div class="row">
-
-                <div class="label">Name</div>
-
-                <div class="value" id="name"></div>
-
-            </div>
-
-
-            <div class="row">
-
-                <div class="label">Email</div>
-
-                <div class="value" id="email"></div>
-
-            </div>
-
-
-            <div class="row">
-
-                <div class="label">Password</div>
-
-                <div class="value">
-
-                    <span id="password"></span>
-
-                    <button class="toggle" id="togglePw" type="button">Show</button>
-
-                </div>
-
-            </div>
-
-
-            <div class="danger">
-
-                <!-- <h3>Delete account</h3> -->
-
-                <!-- <p>This permanently removes your account and saved itineraries. This can't be undone.</p> -->
-
-                <button class="btn-delete" id="openDelete" type="button">
-                    Remove account
-                </button>
-
-            </div>
-
-        </div>
-
-    </main>
+	    <div class="card">
+	
+	        <h2>Account details</h2>
+	        <div class="underline"></div>
+	
+	        <!-- NAME -->
+	        <div class="row">
+	            <div class="label">Name</div>
+	            <div class="value" id="name"></div>
+	            <input type="text" class="edit-input hidden" id="editName">
+	        </div>
+	
+	        <!-- EMAIL -->
+	        <div class="row">
+	            <div class="label">Email</div>
+	            <div class="value" id="email"></div>
+	            <input type="email" class="edit-input hidden" id="editEmail">
+	        </div>
+	
+	        <!-- PASSWORD -->
+	        <div class="row">
+	            <div class="label">Password</div>
+	
+	            <div class="value" id="passwordSection">
+	                <span id="password"></span>
+	                <button class="toggle" id="togglePw" type="button">
+	                    Show
+	                </button>
+	            </div>
+	
+	            <input type="password"
+	                   class="edit-input hidden"
+	                   id="editPassword">
+	        </div>
+	
+	        <!-- EDIT BUTTON -->
+	        <!-- <div class="edit-actions" id="editActions">
+	            <button class="btn-edit" id="editBtn" type="button">
+	                Edit Profile
+	            </button>
+	        </div> -->
+	
+	        <!-- SAVE AND CANCEL -->
+	        <div class="edit-actions hidden" id="saveActions">
+	
+	            <button class="btn-cancel-edit" id="cancelBtn" type="button">
+	                Cancel
+	            </button>
+	
+	            <button class="btn-save" id="saveBtn" type="button">
+	                Save Changes
+	            </button>
+	
+	        </div>
+	        <!-- DELETE ACCOUNT & EDIT PROFILE -->
+			<div class="profile-actions">
+			
+			    <button class="btn-delete" id="openDelete" type="button">
+			        Remove account
+			    </button>
+			
+			    <button class="btn-edit" id="editBtn" type="button">
+			        Edit Profile
+			    </button>
+			
+			</div>
+	
+	    </div>
+	
+	</main>
+	
+	<!-- EDIT PROFILE CONFIRMATION MODAL -->
+	<div class="overlay" id="editOverlay"
+	     role="dialog" aria-modal="true">
+	
+	    <div class="modal">
+	
+	        <h3>Edit your profile?</h3>
+	
+	        <p>Do you want to make changes to your account details?</p>
+	
+	        <div class="actions">
+	
+	            <button class="btn-cancel" id="cancelEdit" type="button">
+	                Cancel
+	            </button>
+	
+	            <button class="btn-edit" id="confirmEdit" type="button">
+	                Yes, Edit
+	            </button>
+	
+	        </div>
+	
+	    </div>
+	
+	</div>
 
 
     <!-- DELETE CONFIRMATION MODAL -->
@@ -426,103 +561,289 @@
         </div>
 
     </div>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+	// USER DATA
+	let user = JSON.parse(localStorage.getItem("user") || "null") || {
+	    name: "Aiman Hakim",
+	    email: "aiman@example.com",
+	    password: "mypassword123"
+	};
+	
+	
+	// ELEMENTS
+	
+	const nameEl = document.getElementById("name");
+	const emailEl = document.getElementById("email");
+	const pwEl = document.getElementById("password");
+	
+	const editName = document.getElementById("editName");
+	const editEmail = document.getElementById("editEmail");
+	const editPassword = document.getElementById("editPassword");
+	
+	const editBtn = document.getElementById("editBtn");
+	const saveBtn = document.getElementById("saveBtn");
+	const cancelBtn = document.getElementById("cancelBtn");
+	
+	const saveActions = document.getElementById("saveActions");
+	const profileActions = document.querySelector(".profile-actions");
+	
+	const passwordSection = document.getElementById("passwordSection");
+	
+	const editOverlay = document.getElementById("editOverlay");
+	const overlay = document.getElementById("overlay");
+	
+	let showPw = false;
+	
+	
+	// DISPLAY PROFILE
+	
+	function displayProfile() {
+	
+	    nameEl.textContent = user.name;
+	    emailEl.textContent = user.email;
+	
+	    document.getElementById("bannerName").textContent = user.name;
+	
+	    renderPw();
+	
+	}
+	
+	
+	// SHOW / HIDE PASSWORD
+	
+	function renderPw() {
+	
+	    pwEl.textContent = showPw
+	        ? user.password
+	        : "•".repeat(Math.max(user.password.length, 8));
+	
+	    document.getElementById("togglePw").textContent =
+	        showPw ? "Hide" : "Show";
+	
+	}
+	
+	document.getElementById("togglePw").addEventListener("click", () => {
+	
+	    showPw = !showPw;
+	    renderPw();
+	
+	});
+	
+	
+	// EDIT PROFILE CONFIRMATION
+	
+	editBtn.addEventListener("click", () => {
+	
+	    editOverlay.classList.add("show");
+	
+	});
+	
+	
+	// CANCEL EDIT CONFIRMATION
+	
+	document.getElementById("cancelEdit").addEventListener("click", () => {
+	
+	    editOverlay.classList.remove("show");
+	
+	});
+	
+	
+	// CONFIRM EDIT
+	
+	document.getElementById("confirmEdit").addEventListener("click", () => {
+	
+	    editOverlay.classList.remove("show");
+	
+	    startEditProfile();
+	
+	});
+	
+	
+	// START EDIT PROFILE
+	
+	function startEditProfile() {
+	
+	    // Put current information into input fields
+	    editName.value = user.name;
+	    editEmail.value = user.email;
+	    editPassword.value = user.password;
+	
+	    // Hide original profile details
+	    nameEl.classList.add("hidden");
+	    emailEl.classList.add("hidden");
+	    passwordSection.classList.add("hidden");
+	
+	    // Show editable input fields
+	    editName.classList.remove("hidden");
+	    editEmail.classList.remove("hidden");
+	    editPassword.classList.remove("hidden");
+	
+	    // Hide Remove Account and Edit Profile buttons
+	    profileActions.classList.add("hidden");
+	
+	    // Show Save Changes and Cancel buttons
+	    saveActions.classList.remove("hidden");
+	
+	}
+	
+	
+	// SAVE CHANGES
+	saveBtn.addEventListener("click", () => {
 
+	    const newName = editName.value.trim();
+	    const newEmail = editEmail.value.trim();
+	    const newPassword = editPassword.value;
 
-    <script>
+	    // Check empty fields
+	    if (newName === "" || newEmail === "" || newPassword === "") {
+	        Swal.fire({
+	            title: "Oops!",
+	            text: "Please fill in all fields.",
+	            icon: "warning",
+	            confirmButtonColor: "#F28C28",
+	            background: "#0B1F3A",
+	            color: "#FFFFFF",
+	            iconColor: "#F28C28"
+	        });
+	        return;
+	    }
 
-        // Sample user. Replace with data from your backend / login session.
+	    // Validate email
+	    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(newEmail)) {
+	        Swal.fire({
+	            title: "Invalid Email!",
+	            text: "Please enter a valid email address.",
+	            icon: "error",
+	            confirmButtonColor: "#F28C28",
+	            background: "#0B1F3A",
+	            color: "#FFFFFF",
+	            iconColor: "#F28C28"
+	        });
+	        return;
+	    }
 
-        const user = JSON.parse(localStorage.getItem("user") || "null") || {
+	    // Update user information
+	    user.name = newName;
+	    user.email = newEmail;
+	    user.password = newPassword;
 
-            name: "Aiman Hakim",
+	    // Save information in localStorage
+	    localStorage.setItem("user", JSON.stringify(user));
 
-            email: "aiman@example.com",
+	    // Update profile display
+	    displayProfile();
 
-            password: "mypassword123"
+	    // Return to main profile
+	    exitEditMode();
 
-        };
+	    // Success popup
+	    Swal.fire({
+	        title: "Profile Updated!",
+	        text: "Your profile has been updated successfully.",
+	        icon: "success",
+	        confirmButtonText: "OK",
+	        confirmButtonColor: "#F28C28",
+	        background: "#0B1F3A",
+	        color: "#FFFFFF",
+	        iconColor: "#F28C28",
+	        customClass: {
+	            popup: "navy-popup",
+	            confirmButton: "orange-button"
+	        }
+	    });
 
-
-        const nameEl = document.getElementById("name");
-
-        const emailEl = document.getElementById("email");
-
-        const pwEl = document.getElementById("password");
-
-        const toggleBtn = document.getElementById("togglePw");
-
-        let showPw = false;
-
-
-        nameEl.textContent = user.name;
-
-        emailEl.textContent = user.email;
-
-        document.getElementById("bannerName").textContent = user.name;
-
-        document.getElementById("avatar").textContent = user.name.charAt(0).toUpperCase();
-
-
-        function renderPw() {
-
-            pwEl.textContent = showPw ? user.password : "•".repeat(Math.max(user.password.length, 8));
-
-            toggleBtn.textContent = showPw ? "Hide" : "Show";
-
-        }
-
-
-        toggleBtn.addEventListener("click", () => {
-
-            showPw = !showPw;
-
-            renderPw();
-
-        });
-
-
-        renderPw();
-
-
-        // DELETE ACCOUNT MODAL
-
-        const overlay = document.getElementById("overlay");
-
-        document.getElementById("openDelete").addEventListener("click", () => overlay.classList.add("show"));
-
-        document.getElementById("cancelDelete").addEventListener("click", () => overlay.classList.remove("show"));
-
-        overlay.addEventListener("click", e => {
-
-            if (e.target === overlay) overlay.classList.remove("show");
-
-        });
-
-
-        document.getElementById("confirmDelete").addEventListener("click", () => {
-
-            // TODO: call your backend to delete the account here
-
-            localStorage.removeItem("user");
-
-            window.location.href = "index.html";
-
-        });
-
-
-        // HAMBURGER MENU
-
-        const menuBtn = document.getElementById("menuBtn");
-
-        const navLinks = document.getElementById("navLinks");
-
-        menuBtn.addEventListener("click", () => {
-
-            navLinks.classList.toggle("open");
-
-        });
-
-    </script>
+	});
+		
+	
+	// CANCEL EDIT
+	
+	cancelBtn.addEventListener("click", () => {
+	
+	    // Discard unsaved changes
+	    // Do not update localStorage
+	
+	    // Return to main profile
+	    displayProfile();
+	    exitEditMode();
+	
+	});
+	
+	
+	// EXIT EDIT MODE
+	
+	function exitEditMode() {
+	
+	    // Show original profile details
+	    nameEl.classList.remove("hidden");
+	    emailEl.classList.remove("hidden");
+	    passwordSection.classList.remove("hidden");
+	
+	    // Hide editable input fields
+	    editName.classList.add("hidden");
+	    editEmail.classList.add("hidden");
+	    editPassword.classList.add("hidden");
+	
+	    // Hide Save Changes and Cancel buttons
+	    saveActions.classList.add("hidden");
+	
+	    // Show Remove Account and Edit Profile buttons
+	    profileActions.classList.remove("hidden");
+	
+	}
+	
+	
+	// INITIAL DISPLAY
+	
+	displayProfile();
+	
+	
+	// DELETE ACCOUNT MODAL
+	
+	document.getElementById("openDelete").addEventListener("click", () => {
+	
+	    overlay.classList.add("show");
+	
+	});
+	
+	document.getElementById("cancelDelete").addEventListener("click", () => {
+	
+	    overlay.classList.remove("show");
+	
+	});
+	
+	overlay.addEventListener("click", (e) => {
+	
+	    if (e.target === overlay) {
+	
+	        overlay.classList.remove("show");
+	
+	    }
+	
+	});
+	
+	document.getElementById("confirmDelete").addEventListener("click", () => {
+	
+	    localStorage.removeItem("user");
+	
+	    window.location.href = "index.html";
+	
+	});
+	
+	
+	// HAMBURGER MENU
+	
+	const menuBtn = document.getElementById("menuBtn");
+	const navLinks = document.getElementById("navLinks");
+	
+	menuBtn.addEventListener("click", () => {
+	
+	    navLinks.classList.toggle("open");
+	
+	});
+	
+	
+</script>
 
 </body>
 
