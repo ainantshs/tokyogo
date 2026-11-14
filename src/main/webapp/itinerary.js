@@ -37,8 +37,12 @@ const ACT_KEY = 'tokyogo_activities_' + trip.id;
 let acts = [];
 try { acts = JSON.parse(localStorage.getItem(ACT_KEY)) || []; } catch (e) {}
 if (!acts.length && trip.id === 't1' && !localStorage.getItem(ACT_KEY)) {
-  acts = [{ id: 'a1', day: 0, place: 'meiji', start: '09:00', end: '11:00' }];
+  acts = [{ id: 'a1', day: 0, place: 'meiji', time: '09:00' }];
 }
+/* activities saved earlier had a start/end time: keep the start as the visit time */
+acts = acts
+  .map(a => ({ id: a.id, day: a.day, place: a.place, time: a.time || a.start }))
+  .filter(a => a.time);
 
 let currentDay = 0;
 let category = 'place';
@@ -71,7 +75,7 @@ const t12 = t => { const [h, m] = t.split(':').map(Number); return `${String(h).
 
 function renderActs() {
   const n = dayCount();
-  const todays = acts.filter(a => a.day === currentDay).sort((a, b) => a.start.localeCompare(b.start));
+  const todays = acts.filter(a => a.day === currentDay).sort((a, b) => a.time.localeCompare(b.time));
   const list = $('activities');
   list.innerHTML = '';
 
@@ -86,7 +90,7 @@ function renderActs() {
     const el = document.createElement('div');
     el.className = 'act';
     el.innerHTML = `
-      <div class="time">${t12(a.start)} – ${t12(a.end)}</div>
+      <div class="time">${t12(a.time)}</div>
       <div class="info"><h3>${esc(p.name)}</h3><p>${esc(p.area)}</p></div>
       <span class="price">${yen(p.price)}</span>
       <button class="icon-btn" title="Remove" aria-label="Remove ${esc(p.name)}">${trash}</button>`;
@@ -110,14 +114,13 @@ document.querySelectorAll('#seg button').forEach(b => b.onclick = () => {
 });
 
 $('addBtn').onclick = () => {
-  const place = $('placeSelect').value, start = $('startTime').value, end = $('endTime').value;
+  const place = $('placeSelect').value, time = $('visitTime').value;
   const err = $('formErr');
-  if (!place || !start || !end) { err.textContent = 'Pick a place and both times.'; return; }
-  if (end <= start) { err.textContent = 'End time must be after the start time.'; return; }
-  const clash = acts.find(a => a.day === currentDay && start < a.end && end > a.start);
-  if (clash) { err.textContent = `That overlaps with ${byId[clash.place].name} (${clash.start}–${clash.end}).`; return; }
+  if (!place || !time) { err.textContent = 'Pick a place and a visit time.'; return; }
+  const clash = acts.find(a => a.day === currentDay && a.time === time);
+  if (clash) { err.textContent = `You already have ${byId[clash.place].name} at ${clash.time}.`; return; }
   err.textContent = '';
-  acts.push({ id: 'a' + Date.now(), day: currentDay, place, start, end });
+  acts.push({ id: 'a' + Date.now(), day: currentDay, place, time });
   saveActs(); render();
 };
 
