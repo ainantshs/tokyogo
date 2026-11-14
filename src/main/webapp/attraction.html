@@ -19,11 +19,18 @@
     --text: #1e2150;
     --muted: #6b6b86;
     --line: #e2dded;
+
+    /* Background photo: set this to the SAME image your other pages use */
+    --hero-img: url("img/tokyo6.jpg");
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
     font-family: "Zen Kaku Gothic New", "Segoe UI", system-ui, Arial, sans-serif;
-    background: var(--bg); color: var(--text); min-height: 100vh;
+    color: var(--text); min-height: 100vh;
+    background:
+      linear-gradient(180deg, rgba(21,23,64,.62) 0%, rgba(21,23,64,.45) 100%),
+      var(--hero-img) center / cover no-repeat fixed,
+      var(--navy-dark); /* fallback if the photo is missing */
   }
   h1, h2, h3, .logo { font-family: "Shippori Mincho", Georgia, "Times New Roman", serif; }
   .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
@@ -43,11 +50,12 @@
   /* PAGE */
   .wrap { max-width: 1200px; margin: 0 auto; padding: 36px 24px 60px; }
   .head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; gap: 12px; flex-wrap: wrap; }
-  .head h2 { font-size: 2rem; }
+  .head h2 { font-size: 2rem; color: #fff; text-shadow: 0 2px 14px rgba(0,0,0,.45); }
   .underline { width: 60px; height: 4px; background: var(--red); border-radius: 2px; margin-bottom: 28px; }
   .btn-add {
     background: var(--red); color: #fff; border: none; border-radius: 999px;
     padding: 12px 26px; font-weight: 700; font-size: .95rem; cursor: pointer; font-family: inherit;
+    box-shadow: 0 8px 20px rgba(200,53,46,.4);
   }
   .btn-add:hover { background: var(--red-dark); }
 
@@ -55,7 +63,7 @@
   .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 24px; }
   .place {
     background: var(--card); border-radius: 20px; padding: 14px;
-    box-shadow: 0 4px 16px rgba(30,33,80,.08);
+    box-shadow: 0 8px 28px rgba(0,0,0,.25);
   }
   .place .row { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
   .edit-btn {
@@ -76,7 +84,10 @@
   }
   .place h3 { margin: 14px 4px 2px; font-size: 1.2rem; }
   .place .sub { margin: 0 4px 4px; color: var(--muted); font-size: .88rem; }
-  .empty { grid-column: 1 / -1; text-align: center; color: var(--muted); padding: 50px 0; }
+  .empty {
+    grid-column: 1 / -1; text-align: center; color: var(--muted); padding: 50px 20px;
+    background: rgba(255,255,255,.94); border-radius: 20px;
+  }
 
   /* POPUP BOX */
   .overlay {
